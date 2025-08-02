@@ -1,14 +1,100 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lonesome Duck Terminal</title>
+    <style>
+        /* Fallout-style terminal look */
+        body {
+            margin: 0;
+            background-color: #000;
+            color: #33ff33;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 1.2em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/react-app/main.tsx"></script>
-  </body>
+        #terminal {
+            width: 95%;
+            max-width: 800px;
+            height: 90vh;
+            background-color: #111;
+            padding: 10px;
+            border: 2px solid #33ff33;
+            box-sizing: border-box;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #output {
+            flex: 1;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        #input-line {
+            display: flex;
+            align-items: center;
+        }
+
+        #input-line input {
+            background: transparent;
+            border: none;
+            color: #33ff33;
+            flex: 1;
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+        }
+
+        @media (max-width: 600px) {
+            #terminal {
+                font-size: 1em;
+                height: 95vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Terminal Screen -->
+    <div id="terminal">
+        <div id="output"></div>
+        <div id="input-line">
+            <span>&gt; </span><input type="text" id="command" autofocus autocomplete="off">
+        </div>
+    </div>
+
+    <script>
+        const commandInput = document.getElementById('command');
+        const output = document.getElementById('output');
+
+        const responses = {
+            help: "Available commands:\n- help\n- status\n- unlock [doorid]",
+            status: "System Status:\nDOOR1: LOCKED\nDOOR2: UNLOCKED\nAI CORE: ACTIVE",
+            "unlock door1": "DOOR1 UNLOCKED.",
+            "unlock door2": "DOOR2 ALREADY UNLOCKED.",
+            unknown: "ERROR: UNKNOWN COMMAND"
+        };
+
+        function handleCommand(cmd) {
+            const command = cmd.trim().toLowerCase();
+            const response = responses[command] || responses.unknown;
+            output.innerHTML += `> ${cmd}\n${response}\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        commandInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                const cmd = commandInput.value;
+                handleCommand(cmd);
+                commandInput.value = '';
+            }
+        });
+    </script>
+</body>
 </html>
