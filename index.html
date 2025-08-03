@@ -94,7 +94,7 @@
     </div>
 
     <!-- Terminal Screen -->
-    <div id="terminal" visibility="false">
+    <div id="terminal">
         <div id="output"></div>
         <div id="input-line">
             <span>&gt; </span><input type="text" id="command" autofocus autocomplete="off">
@@ -110,7 +110,7 @@
         const loginError = document.getElementById('login-error');
         const commandInput = document.getElementById('command');
         const output = document.getElementById('output');
-        output.innerHTML = "*************************\n*L O N E S O M E D U C K*\n      PROJECT  SITE      \n*************************"
+        output.innerHTML = "*************************\n*L O N E S O M E D U C K*\n    PROJECT      SITE    \n*************************"
         const validUsername = "TEST";
         const validPassword = "PASS";
 
@@ -121,7 +121,6 @@
             if (username === validUsername && password === validPassword) {
                 loginDiv.style.display = 'none';
                 terminalDiv.style.display = 'flex';
-                terminalDiv.style.visibility = "true"
                 commandInput.focus();
             } else {
                 loginError.style.display = 'block';
