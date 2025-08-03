@@ -18,14 +18,18 @@
             height: 100vh;
         }
 
-        #terminal {
+        #login, #terminal {
             width: 95%;
             max-width: 800px;
-            height: 90vh;
             background-color: #111;
             padding: 10px;
             border: 2px solid #33ff33;
             box-sizing: border-box;
+        }
+
+        #terminal {
+            display: none;
+            height: 90vh;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -52,6 +56,24 @@
             outline: none;
         }
 
+        input[type="text"], input[type="password"], button {
+            background: #000;
+            color: #33ff33;
+            border: 1px solid #33ff33;
+            font-family: inherit;
+            font-size: 1em;
+            padding: 5px;
+            margin-top: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #login-error {
+            color: red;
+            margin-top: 5px;
+            display: none;
+        }
+
         @media (max-width: 600px) {
             #terminal {
                 font-size: 1em;
@@ -61,6 +83,16 @@
     </style>
 </head>
 <body>
+    <!-- Login Screen -->
+    <div id="login">
+        <div>Username:</div>
+        <input type="text" id="username" autocomplete="off">
+        <div>Password:</div>
+        <input type="password" id="password" autocomplete="off">
+        <button id="login-btn">Login</button>
+        <div id="login-error">ACCESS DENIED</div>
+    </div>
+
     <!-- Terminal Screen -->
     <div id="terminal">
         <div id="output"></div>
@@ -70,12 +102,44 @@
     </div>
 
     <script>
+        const loginDiv = document.getElementById('login');
+        const terminalDiv = document.getElementById('terminal');
+        const loginBtn = document.getElementById('login-btn');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginError = document.getElementById('login-error');
         const commandInput = document.getElementById('command');
         const output = document.getElementById('output');
+        output.innerHTML = "*************************\n*L O N E S O M E D U C K*\n      PROJECT  SITE      *************************"
+        const validUsername = "TEST";
+        const validPassword = "PASS";
+
+        function attemptLogin() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (username === validUsername && password === validPassword) {
+                loginDiv.style.display = 'none';
+                terminalDiv.style.display = 'flex';
+                commandInput.focus();
+            } else {
+                loginError.style.display = 'block';
+            }
+        }
+
+        // Trigger login on button click
+        loginBtn.addEventListener('click', attemptLogin);
+
+        // Trigger login on Enter key
+        passwordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                attemptLogin();
+            }
+        });
 
         const responses = {
             help: "Available commands:\n- help\n- status\n- unlock [doorid]",
-            status: "System Status:\nDOOR1: LOCKED\nDOOR2: UNLOCKED\nAI CORE: ACTIVE",
+            status: "System Status:\nALL SITES LOCKED\nALL SITES STABLE",
             "unlock door1": "DOOR1 UNLOCKED.",
             "unlock door2": "DOOR2 ALREADY UNLOCKED.",
             unknown: "ERROR: UNKNOWN COMMAND"
@@ -83,8 +147,8 @@
 
         function handleCommand(cmd) {
             const command = cmd.trim().toLowerCase();
-            const response = responses[command] || responses.unknown;
-            output.innerHTML += `> ${cmd}\n${response}\n`;
+            const response = responses[command] || responses.unknown; //Grab from responses, or return unknown
+            output.innerHTML += `\n> ${cmd}\n${response}\n`; //Echo command and response onto terminal
             output.scrollTop = output.scrollHeight;
         }
 
