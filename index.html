@@ -15,32 +15,23 @@ TODO: place something here for the players to find if they actully open dev tool
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Mobile-safe viewport with notch support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lonesome Duck Terminal</title>
     <style>
-        :root{
-            /* Height of the input bar; JS updates --kb-offset when keyboard opens */
-            --input-bar-h: 56px;
-            --kb-offset: 0px; /* extra lift to clear virtual keyboard via visualViewport */
-        }
-
         body {
-            margin: 10; /* kept as-is */
+            margin: 10;
             background-color: #000;
             color: #519551;
             font-family: "Courier New", Courier, monospace;
-            font-size: 1.1em; /* slightly smaller default for phones */
+            font-size: 1.2em;
             display: flex;
             justify-content: center;
-            align-items: stretch;
-            min-height: 100vh;
-            min-height: 100svh; /* small viewport units for mobile browsers */
+            align-items: center;
+            height: 100vh;
         }
 
-        /* Shared panel look */
         #login, #terminal {
-            width: 100%;
+            width: 95%;
             max-width: 800px;
             background-color: #111;
             padding: 10px;
@@ -48,72 +39,25 @@ TODO: place something here for the players to find if they actully open dev tool
             box-sizing: border-box;
         }
 
-        /* Stack the app full-height on mobile */
-        .app {
-            width: 95%;
-            max-width: 800px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        /* LOGIN */
-        #login {
-            display: block;
-        }
-
-
-        #login-error {
-            color: red;
-            margin-top: 8px;
-            display: none;
-        }
-
-        /* TERMINAL AREA */
         #terminal {
-            display: none;       /* revealed after PAPERCLIP */
-            padding-bottom: calc(var(--input-bar-h) + 12px); /* space so output isn't hidden behind bar */
-            position: relative;
-            min-height: 60vh;
+            display: none;
+            height: 90vh;
+            overflow-y: auto;
+            flex-direction: column;
         }
 
-        /* Output scroll area fills the available vertical space above the input bar */
         #output {
-            /* Occupy all height except our reserved input-bar space */
-            max-height: none;
+            flex: 1;
             overflow-y: auto;
             white-space: pre-wrap;
         }
 
-        /* Input bar is pinned above the keyboard.
-           We use fixed positioning + safe-area padding + JS visualViewport shim. */
-        #input-bar {
-            position: fixed;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: calc(env(safe-area-inset-bottom, 0px) + var(--kb-offset));
-            width: min(95vw, 800px);
+        #input-line {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: #111;
-            border: 2px solid #519551;
-            border-top: 2px solid #519551;
-            padding: 8px;
-            box-sizing: border-box;
-            z-index: 1000; /* above terminal */
         }
 
-        /* Keep bar height consistent across devices */
-        #input-bar * {
-            font-size: 1em;
-        }
-
-        #prompt {
-            user-select: none;
-        }
-
-        #command {
+        #input-line input {
             background: transparent;
             border: none;
             color: #519551;
@@ -121,27 +65,28 @@ TODO: place something here for the players to find if they actully open dev tool
             font-family: inherit;
             font-size: inherit;
             outline: none;
-            min-height: 1.4em;
         }
 
-        /* Canvas map sits inside terminal content flow; toggle via command */
-        #townMap {
-            border: 1px solid #519551;
+
+        #login-error {
+            color: red;
+            margin-top: 5px;
             display: none;
-            width: 100%;
-            height: auto;
-            max-height: 40vh;
         }
 
-        @media (min-width: 601px) {
-            body { font-size: 1.2em; }
+        @media (max-width: 600px) {
+            #terminal {
+                font-size: 1em;
+                height: 95vh;
+            }
         }
-
-        /* Subtle scanline overlay */
         body::before {
             content: "";
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
             background: 
                 repeating-linear-gradient(
@@ -153,11 +98,13 @@ TODO: place something here for the players to find if they actully open dev tool
             z-index: 10;
         }
 
-        /* Very light flicker layer */
         body::after {
             content: "";
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: #000;
             opacity: 0.03;
             pointer-events: none;
@@ -171,68 +118,49 @@ TODO: place something here for the players to find if they actully open dev tool
             100% { opacity: 0.02; }
         }
 
-        /* Apply CRT wobble filter + glow */
         #terminal, #login {
             filter: url(#crt-wave);
             text-shadow: 0 0 3px #519551, 0 0 10px #519551;
         }
     </style>
 
-    <!-- SVG filter for animated CRT distortion -->
     <svg style="position: fixed; width: 0; height: 0;">
         <filter id="crt-wave">
-            <feTurbulence id="crtNoise"
-                          type="turbulence"
-                          baseFrequency="0.01 0.02"
-                          numOctaves="2"
-                          seed="2"
-                          result="turbulence"/>
-            <feDisplacementMap id="crtDisp"
-                               in="SourceGraphic"
-                               in2="turbulence"
-                               scale="2"
-                               xChannelSelector="R"
-                               yChannelSelector="G"/>
+            <feTurbulence type="turbulence" baseFrequency="0.01" numOctaves="1" result="turbulence"/>
+            <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="2" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
     </svg>
 
 </head>
 <body>
-    <div class="app">
-        <!-- Login Screen -->
-        <div id="login">
-            <div>SECURITY KEY:</div>
-            <input type="text" id="username" autocomplete="off" inputmode="latin" enterkeyhint="go">
-            <button id="login-btn">Login</button>
-            <div id="login-error">ACCESS DENIED</div>
-        </div>
+    <!-- Login Screen -->
+    <div id="login">
+        <div>ACCESS KEY:</div>
+        <input type="text" id="username" autocomplete="off">
+        <button id="login-btn">Login</button>
+        <div id="login-error">ACCESS DENIED</div>
+        
+    </div>
 
-        <!-- Terminal Screen -->
-        <div id="terminal">
-            <div id="output"></div>
-            <!-- Optional map canvas inside terminal flow -->
-            <canvas id="townMap" width="500" height="400"></canvas>
+    <!-- Terminal Screen -->
+    <canvas id="townMap" width="500" height="400" style="border: 1px solid #519551; display: none;"></canvas>
+
+    <div id="terminal">
+        <div id="output"></div>
+        <div id="input-line">
+            <span>&gt; </span><input type="text" id="command" autofocus autocomplete="off">
         </div>
     </div>
 
-    <!-- Pinned input bar (visible only after login) -->
-    <div id="input-bar" style="display:none;">
-        <span id="prompt">&gt;</span>
-        <input type="text" id="command" autocomplete="off" enterkeyhint="send" inputmode="latin">
-    </div>
-</body>
+
     <script>
         const loginDiv = document.getElementById('login');
         const terminalDiv = document.getElementById('terminal');
         const loginBtn = document.getElementById('login-btn');
         const usernameInput = document.getElementById('username');
         const loginError = document.getElementById('login-error');
-
-
         const commandInput = document.getElementById('command');
-        const inputBar = document.getElementById('input-bar');
         const output = document.getElementById('output');
-
         const dateLine = getCenteredTimestampLine();
         output.innerHTML = "*************************\n" +
                             "*L O N E S O M E D U C K*\n" +
@@ -240,39 +168,33 @@ TODO: place something here for the players to find if they actully open dev tool
                             "*************************\n" +
                             dateLine; 
 
+
         const validUsername = "PAPERCLIP";
 
         function attemptLogin() {
             const username = usernameInput.value.trim();
-            console.log("Attemptlogin: Username: " + username)
+
             if (username === validUsername) {
                 loginDiv.style.display = 'none';
-                terminalDiv.style.display = 'block';
-                inputBar.style.display = 'flex';
-                // Focus the command input; on iOS, requires a user gesture (the login click/enter counts)
-                setTimeout(() => {
-                    commandInput.focus();
-                    scrollOutputToBottom();
-                }, 50);
+                terminalDiv.style.display = 'flex';
+                commandInput.focus();
             } else {
                 loginError.style.display = 'block';
             }
         }
 
         // Trigger login on button click
-        loginBtn.addEventListener('click', function(){
-            console.log("login listener");
-            attemptLogin();
-        });
+        loginBtn.addEventListener('click', attemptLogin);
 
         // Trigger login on Enter key
         usernameInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') attemptLogin();
+            if (e.key === 'Enter') {
+                attemptLogin();
+            }
         });
 
-        // Terminal responses
         const responses = {
-            help: "Available commands:\n- help\n- status\n- unlock [doorid]\n- map (toggle)",
+            help: "Available commands:\n- help\n- status\n- unlock [doorid]",
             status: "System Status:\nALL SITES LOCKED\nALL SITES STABLE",
             "unlock door1": "DOOR1 UNLOCKED.",
             "unlock door2": "DOOR2 ALREADY UNLOCKED.",
@@ -283,6 +205,7 @@ TODO: place something here for the players to find if they actully open dev tool
             "use password5": () => shutdownZone('graveyard'),
             "use password6": () => shutdownZone('saloon'),
             "map": () => toggleMap(),
+
             unknown: "ERROR: UNKNOWN COMMAND"
         };
 
@@ -300,8 +223,8 @@ TODO: place something here for the players to find if they actully open dev tool
                 outputText = responses.unknown;
             }
 
-            output.innerHTML += `\n&gt; ${escapeHtml(cmd)}\n${escapeHtml(outputText)}\n`;
-            scrollOutputToBottom();
+            output.innerHTML += `\n> ${cmd}\n${outputText}\n`;
+            output.scrollTop = output.scrollHeight;
         }
 
         commandInput.addEventListener('keydown', function (e) {
@@ -312,70 +235,128 @@ TODO: place something here for the players to find if they actully open dev tool
             }
         });
 
-        // Escape only &, <, > for safe innerHTML (per your preference)
-        function escapeHtml(str) {
-            return String(str)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;");
-        }
+            //CANVAS 
+            const canvas = document.getElementById("townMap");
+            const ctx = canvas.getContext("2d");
 
-        function scrollOutputToBottom() {
-            // Ensure we scroll the output fully into view, accounting for input bar height
-            output.scrollTop = output.scrollHeight;
-        }
+            const zoneSize = 100;
+            const zonePadding = 10;
 
-        // ====== CANVAS (MAP) ======
-        const canvas = document.getElementById("townMap");
-        const ctx = canvas.getContext("2d");
+            // Define zones and their coordinates
+            const zoneMap = [
+                { name: "church", x: 0, y: 0 },
+                { name: "jail", x: 1, y: 0 },
+                { name: "bank", x: 2, y: 0 },
+                { name: "fountain", x: 0, y: 1 },
+                { name: "graveyard", x: 1, y: 1 },
+                { name: "saloon", x: 2, y: 1 },
+                { name: "ai core", x: 1, y: 2 }
+            ];
 
-        const zoneSize = 100;
-        const zonePadding = 10;
+            // Same zones object as before
+            let zones = {
+                church: "online",
+                jail: "online",
+                bank: "online",
+                fountain: "online",
+                graveyard: "online",
+                saloon: "online",
+                "ai core": "active"
+            };
+            
+            // Draw all zones
+            function drawMap() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Define zones and their coordinates
-        const zoneMap = [
-            { name: "church", x: 0, y: 0 },
-            { name: "jail", x: 1, y: 0 },
-            { name: "bank", x: 2, y: 0 },
-            { name: "fountain", x: 0, y: 1 },
-            { name: "graveyard", x: 1, y: 1 },
-            { name: "saloon", x: 2, y: 1 },
-            { name: "ai core", x: 1, y: 2 }
-        ];
+                                //Replace this with a unique shape for each zone, 
+                for (const zone of zoneMap) {
+                    const status = zones[zone.name];
+                    const color = status === "offline" ? "#004400" : "#550000";
 
-        // Same zones object as before
-        let zones = {
-            church: "online",
-            jail: "online",
-            bank: "online",
-            fountain: "online",
-            graveyard: "online",
-            saloon: "online",
-            "ai core": "active"
-        };
-        
-        // Draw all zones
-        function drawMap() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const x = zone.x * (zoneSize + zonePadding);
+                    const y = zone.y * (zoneSize + zonePadding);
 
-            //Replace this with a unique shape for each zone, 
-            for (const zone of zoneMap) {
-                const status = zones[zone.name];
-                const color = status === "offline" ? "#004400" : "#550000";
+                    // Draw zone rectangle
+                    ctx.fillStyle = color;
+                    ctx.fillRect(x, y, zoneSize, zoneSize);
 
-                const x = zone.x * (zoneSize + zonePadding);
-                const y = zone.y * (zoneSize + zonePadding);
+                    // Draw zone label
+                    ctx.strokeStyle = "#519551";
+                    ctx.strokeRect(x, y, zoneSize, zoneSize);
+                    ctx.fillStyle = "#519551";
+                    ctx.font = "14px Courier New";
+                    ctx.fillText(zone.name.toUpperCase(), x + 5, y + 20);
+                }
 
-                // Draw zone rectangle
-                ctx.fillStyle = color;
-                ctx.fillRect(x, y, zoneSize, zoneSize);
-
-                // Draw zone label
-                ctx.strokeStyle = "#519551";
-                ctx.strokeRect(x, y, zoneSize, zoneSize);
-                ctx.fillStyle = "#519551";
             }
+
+            // Toggle map visibility
+            function toggleMap() {
+                if (canvas.style.display === "none") {
+                    canvas.style.display = "block";
+                    drawMap();
+                } else {
+                    canvas.style.display = "none";
+                }
+                return 
+            }
+
+            // Click-based status display
+            canvas.addEventListener("click", (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const clickY = e.clientY - rect.top;
+
+                for (const zone of zoneMap) {
+                    const x = zone.x * (zoneSize + zonePadding);
+                    const y = zone.y * (zoneSize + zonePadding);
+
+                    if (
+                        clickX >= x && clickX <= x + zoneSize &&
+                        clickY >= y && clickY <= y + zoneSize
+                    ) {
+                        alert(`${zone.name.toUpperCase()}: ${zones[zone.name].toUpperCase()}`);
+                        break;
+                    }
+                }
+            });
+
+
+        //Helpers, Getters, Setters
+        function getCenteredTimestampLine() {
+            const now = new Date();
+
+            // Format: e.g., "AUG 03 2025 17:25:07"
+            const timestamp = now.toLocaleString('en-US', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+            }).toUpperCase();
+
+            // Strip comma, keep it clean
+            const cleanTime = timestamp.replace(',', '');
+
+            // Center align it in 25-character width
+            const totalWidth = 25;
+            const padding = Math.floor((totalWidth - cleanTime.length) / 2);
+            const paddedLine = ' '.repeat(padding) + cleanTime;
+
+            return paddedLine;
         }
+
+        function shutdownZone(zoneName) {
+            if (zones[zoneName] === "offline") {
+                return `${zoneName.toUpperCase()} ALREADY OFFLINE.`;
+            }
+            zones[zoneName] = "offline";
+            drawMap(); // re-render the map
+            return `${zoneName.toUpperCase()} SYSTEM: SHUT DOWN SUCCESSFUL.`;
+        }
+
     </script>
 </body>
 </html>
