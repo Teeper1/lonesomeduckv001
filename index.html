@@ -62,17 +62,6 @@ TODO: place something here for the players to find if they actully open dev tool
             display: block;
         }
 
-        input[type="text"], input[type="password"], button {
-            background: #000;
-            color: #519551;
-            border: 1px solid #519551;
-            font-family: inherit;
-            font-size: 1em;
-            padding: 10px;
-            margin-top: 8px;
-            width: 100%;
-            box-sizing: border-box;
-        }
 
         #login-error {
             color: red;
@@ -231,7 +220,7 @@ TODO: place something here for the players to find if they actully open dev tool
         <span id="prompt">&gt;</span>
         <input type="text" id="command" autocomplete="off" enterkeyhint="send" inputmode="latin">
     </div>
-
+</body>
     <script>
         const loginDiv = document.getElementById('login');
         const terminalDiv = document.getElementById('terminal');
@@ -239,7 +228,7 @@ TODO: place something here for the players to find if they actully open dev tool
         const usernameInput = document.getElementById('username');
         const loginError = document.getElementById('login-error');
 
-        
+
         const commandInput = document.getElementById('command');
         const inputBar = document.getElementById('input-bar');
         const output = document.getElementById('output');
@@ -255,7 +244,7 @@ TODO: place something here for the players to find if they actully open dev tool
 
         function attemptLogin() {
             const username = usernameInput.value.trim();
-
+            console.log("Attemptlogin: Username: " + username)
             if (username === validUsername) {
                 loginDiv.style.display = 'none';
                 terminalDiv.style.display = 'block';
@@ -271,7 +260,10 @@ TODO: place something here for the players to find if they actully open dev tool
         }
 
         // Trigger login on button click
-        loginBtn.addEventListener('click', attemptLogin);
+        loginBtn.addEventListener('click', function(){
+            console.log("login listener");
+            attemptLogin();
+        });
 
         // Trigger login on Enter key
         usernameInput.addEventListener('keydown', function(e) {
@@ -382,6 +374,8 @@ TODO: place something here for the players to find if they actully open dev tool
                 ctx.strokeStyle = "#519551";
                 ctx.strokeRect(x, y, zoneSize, zoneSize);
                 ctx.fillStyle = "#519551";
+            }
+        }
     </script>
 </body>
 </html>
