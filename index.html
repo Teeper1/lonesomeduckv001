@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <!--
 Howdy doody everybody 
+AUTHOR: Tyler Porter
 
 This is a website built to be an interactive terminal for a dnd adjacent story involving a carefully built diorama.
+ - First, read "Lonesome Dove" by Larry McMurtry
+ - Then play/watch/listen to the following for years: SOMA, There Will Be Blood, No Country For Old Men, I Have No Mouth And I Must Scream, All of Harlan Ellison except for when hes talking as himself, Mouthwashing, The Witness, Death Cab For Cutie,
+ - Blend it, and carefully bake.
+ - Then you get this project! I dont know why im doing this. I just wanted to. Maybe ill be famous for it. 
+
+Originally published back in August, so if any of you look this up.
+ This has been live since mid august. Any of you could have googled this and spoiled yourselves
 
 This is coded poorly,a lot of chatGPT here, no intent for best practice, 
 just to be a prop in a overly prepared 6 hour magic trick.
+ - Must less GPT now, i actually had to start doing this manually. 
+ - I fucking hate front end. Just let me be magic math backend man, I dont understand colors, thats why i got the CS degree
 
-It'll be fun, and thats what im trying to achieve.
 
-TODO: place something here for the players to find if they actully open dev tools to look further.
+It'll be a fun time, and thats what im trying to achieve.
+
+
 
 -->
 <html lang="en">
@@ -18,16 +29,196 @@ TODO: place something here for the players to find if they actully open dev tool
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lonesome Duck Terminal</title>
     <style>
+        @keyframes scanlineMove {
+        0% { background-position: 0 0, 0 0; }
+        100% { background-position: 0 100%, 10px 100%; }
+        }
+        @keyframes flicker {
+        0% {
+            opacity: 0.27861;
+        }
+        5% {
+            opacity: 0.34769;
+        }
+        10% {
+            opacity: 0.23604;
+        }
+        15% {
+            opacity: 0.50626;
+        }
+        20% {
+            opacity: 0.18128;
+        }
+        25% {
+            opacity: 0.33891;
+        }
+        30% {
+            opacity: 0.65583;
+        }
+        35% {
+            opacity: 0.67807;
+        }
+        40% {
+            opacity: 0.26559;
+        }
+        45% {
+            opacity: 0.14693;
+        }
+        50% {
+            opacity: 0.36019;
+        }
+        55% {
+            opacity: 0.98594;
+        }
+        60% {
+            opacity: 0.20313;
+        }
+        65% {
+            opacity: 0.61988;
+        }
+        70% {
+            opacity: 0.53455;
+        }
+        75% {
+            opacity: 0.37288;
+        }
+        80% {
+            opacity: 0.11428;
+        }
+        85% {
+            opacity: 0.50419;
+        }
+        90% {
+            opacity: 0.9003;
+        }
+        95% {
+            opacity: 0.86108;
+        }
+        100% {
+            opacity: 0.24387;
+        }
+        }
+        @keyframes textShadow {
+        0% {
+            text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        5% {
+            text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        10% {
+            text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        15% {
+            text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        20% {
+            text-shadow: 3.4794037899852017px 0 1px rgba(0,30,255,0.5), -3.4794037899852017px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        25% {
+            text-shadow: 1.6125630401149584px 0 1px rgba(0,30,255,0.5), -1.6125630401149584px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        30% {
+            text-shadow: 0.7015590085143956px 0 1px rgba(0,30,255,0.5), -0.7015590085143956px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        35% {
+            text-shadow: 3.896914047650351px 0 1px rgba(0,30,255,0.5), -3.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        40% {
+            text-shadow: 3.870905614848819px 0 1px rgba(0,30,255,0.5), -3.870905614848819px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        45% {
+            text-shadow: 2.231056963361899px 0 1px rgba(0,30,255,0.5), -2.231056963361899px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        50% {
+            text-shadow: 0.08084290417898504px 0 1px rgba(0,30,255,0.5), -0.08084290417898504px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        55% {
+            text-shadow: 2.3758461067427543px 0 1px rgba(0,30,255,0.5), -2.3758461067427543px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        60% {
+            text-shadow: 2.202193051050636px 0 1px rgba(0,30,255,0.5), -2.202193051050636px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        65% {
+            text-shadow: 2.8638780614874975px 0 1px rgba(0,30,255,0.5), -2.8638780614874975px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        70% {
+            text-shadow: 0.48874025155497314px 0 1px rgba(0,30,255,0.5), -0.48874025155497314px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        75% {
+            text-shadow: 1.8948491305757957px 0 1px rgba(0,30,255,0.5), -1.8948491305757957px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        80% {
+            text-shadow: 1.0833037308038857px 0 1px rgba(0,30,255,0.5), -1.0833037308038857px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        85% {
+            text-shadow: 1.09769827255241735px 0 1px rgba(0,30,255,0.5), -1.09769827255241735px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        90% {
+            text-shadow: 3.443339761481782px 0 1px rgba(0,30,255,0.5), -3.443339761481782px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        95% {
+            text-shadow: 2.1841838852799786px 0 1px rgba(0,30,255,0.5), -2.1841838852799786px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        100% {
+            text-shadow: 2.6208764473832513px 0 1px rgba(0,30,255,0.5), -2.6208764473832513px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+        }
+        }
+        body::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(18, 16, 16, 0.1);
+            opacity: 0;
+            z-index: 2;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.0.10), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.0.10));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            animation: scanlineMove 5s linear infinite;
+        }
         body {
+            animation: textShadow 1.6s infinite;
+            /* scanlines */
+            background: linear-gradient(to top, #000000, #000000, #414141, #414141);
+            background-size: cover;
+            background-size: 100% 1px;
+
+            /* retro stuff */
+            color: #519551;
+            font-family: "Courier New", monospace;
+            font-size: 50px;
+            text-shadow: 0 0 10px #519551;
+
+            /* flex stuff */
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+
+            filter: blur(0.6px);
+            border-radius: 20px;
+            
             margin: 10;
             background-color: #000;
-            color: #519551;
             font-family: "Courier New", Courier, monospace;
             font-size: 1.2em;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
+            text-transform: uppercase;
+
         }
 
         #login, #terminal {
@@ -37,6 +228,8 @@ TODO: place something here for the players to find if they actully open dev tool
             padding: 10px;
             border: 2px solid #519551;
             box-sizing: border-box;
+            text-transform: uppercase;
+
         }
 
         #terminal {
@@ -55,6 +248,7 @@ TODO: place something here for the players to find if they actully open dev tool
         #input-line {
             display: flex;
             align-items: center;
+            text-transform: uppercase;
         }
 
         #input-line input {
@@ -65,6 +259,8 @@ TODO: place something here for the players to find if they actully open dev tool
             font-family: inherit;
             font-size: inherit;
             outline: none;
+            text-transform: uppercase;
+
         }
 
 
@@ -80,56 +276,44 @@ TODO: place something here for the players to find if they actully open dev tool
                 height: 95vh;
             }
         }
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(0, 0, 0, 0) 0px,
-                    rgba(0, 0, 0, 0) 2px,
-                    rgba(0, 0, 0, 0.03) 3px
-                );
-            z-index: 10;
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            opacity: 0.03;
-            pointer-events: none;
-            animation: flicker 0.15s infinite;
-            z-index: 11;
-        }
-
-        @keyframes flicker {
-            0%   { opacity: 0.01; }
-            50%  { opacity: 0.05; }
-            100% { opacity: 0.02; }
-        }
+        
 
         #terminal, #login {
             filter: url(#crt-wave);
             text-shadow: 0 0 3px #519551, 0 0 10px #519551;
         }
+        .user-command {
+            color: #4118f4; /* User command echo color  */
+        }
+
+        .system-output {
+            color: #519551; /* existing retro green for system text */
+        }
+
     </style>
 
     <svg style="position: fixed; width: 0; height: 0;">
         <filter id="crt-wave">
-            <feTurbulence type="turbulence" baseFrequency="0.01" numOctaves="1" result="turbulence"/>
-            <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+            <feTurbulence 
+            id="turbulence" 
+            type="fractalNoise" 
+            baseFrequency="0.005 0.015" 
+            numOctaves="2" 
+            result="noise">
+            <animate 
+                attributeName="baseFrequency" 
+                dur="40s" 
+                values="0.005 0.01; 0.008 0.02; 0.004 0.01; 0.006 0.02; 0.005 0.01" 
+                repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap 
+            in="SourceGraphic" 
+            in2="noise" 
+            scale="4" 
+            xChannelSelector="R" 
+            yChannelSelector="G" />
         </filter>
-    </svg>
+        </svg>
 
 </head>
 <body>
@@ -194,8 +378,9 @@ TODO: place something here for the players to find if they actully open dev tool
         });
 
         const responses = {
-            help: "Available commands:\n- help\n- status\n- unlock [doorid]",
+            help: "Available commands:\n- status\n- view record [9 DIGIT ID]\n- [PASSWORD]",
             status: "System Status:\nALL SITES LOCKED\nALL SITES STABLE",
+            "view record": "- view record [9 DIGIT ID]",
             "unlock door1": "DOOR1 UNLOCKED.",
             "unlock door2": "DOOR2 ALREADY UNLOCKED.",
             "use password1": () => shutdownZone('church'),
@@ -205,6 +390,14 @@ TODO: place something here for the players to find if they actully open dev tool
             "use password5": () => shutdownZone('graveyard'),
             "use password6": () => shutdownZone('saloon'),
             "map": () => toggleMap(),
+
+            "view record 751024919": '-------------------------\nPersonnel Record: Lonesome (Duck)\n Classification: Safe\n Summary: Lonesome is a female call duck who has taken residence in the town\'s fountain.\n The locals appreciate her, and have named the town after her. She is a consistent source of morale. \n [EDITED 08-25-1871]Lonesome died due to an accident with the town\'s water supply shortly after Reginald began the "FESSENDER WATER COMPANY".\n-------------------------\n',
+            "view record 359086919": '-------------------------\nPersonnel Record: Eli Sunday',
+            "view record 359086191": '-------------------------\nPersonnel Record: Anna Bell',
+            "view record 359086919": '-------------------------\nPersonnel Record: Reginald Fessender',
+            "view record 000000000": '-------------------------\nPersonnel Record: Fortune Teller',
+            "view record 751086919": '-------------------------\nPersonnel Record: Horse Trader',
+            "view record 751086919": '-------------------------\nPersonnel Record: The Machine',
 
             unknown: "ERROR: UNKNOWN COMMAND"
         };
@@ -216,16 +409,45 @@ TODO: place something here for the players to find if they actully open dev tool
             let outputText;
 
             if (typeof response === "function") {
-                outputText = response(); // ✅ Call the function
+                outputText = response();
             } else if (typeof response === "string") {
                 outputText = response;
             } else {
                 outputText = responses.unknown;
             }
 
-            output.innerHTML += `\n> ${cmd}\n${outputText}\n`;
+            // Create and append the user command line immediately
+            const userDiv = document.createElement('div');
+            userDiv.innerHTML = `<span class="user-command">&gt; ${cmd}</span>`;
+            output.appendChild(userDiv);
+
+            // Create the system output container
+            const sysDiv = document.createElement('div');
+            sysDiv.classList.add('system-output');
+            output.appendChild(sysDiv);
+
+            // Type out the system output
+            typeWriter(sysDiv, outputText, 15);
+
             output.scrollTop = output.scrollHeight;
         }
+
+        // Helper function to "type out" text one character at a time
+        function typeWriter(element, text, delay = 20) {
+            let i = 0;
+
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    output.scrollTop = output.scrollHeight;
+                    i++;
+                    setTimeout(type, delay + Math.random() * 100);
+                }
+            }
+
+            type();
+        }
+
 
         commandInput.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
@@ -356,7 +578,11 @@ TODO: place something here for the players to find if they actully open dev tool
             drawMap(); // re-render the map
             return `${zoneName.toUpperCase()} SYSTEM: SHUT DOWN SUCCESSFUL.`;
         }
-
+        setInterval(() => {
+            const turbulence = document.getElementById('turbulence');
+            const randomFreq = (Math.random() * 0.02 + 0.005).toFixed(3);
+            turbulence.setAttribute('baseFrequency', `${randomFreq} ${randomFreq}`);
+        }, 3000);
     </script>
 </body>
 </html>
