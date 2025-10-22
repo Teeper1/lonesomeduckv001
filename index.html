@@ -469,7 +469,7 @@ CHANGELOG:
             "view record 751024919": '-------------------------\nPersonnel Record: Horse Trader',
             "view record 751086919": '-------------------------\nPersonnel Record: The Machine\n Classification: █████\n Summary: The Machine is an anomalous artifact far outreaching our current technological capabilities. It appears to be a management system/protector of an unknown civiliation. After first being discovered in Lonesome Duck it began caring for and helping residents secretly by scaring away predators, rerouting underwater aquifers, and providing underground heat to buildings. The townsfolk are unaware of its presence.\n [EDITED 02-25-1864]After the death of the town\'s \"mascot\" The Machine has ceased all functions and now appears inert. All files deleted, No further studies will be conducted.',
 
-            minotaur: () => activateRedMode(),
+            minotaur: () => minotaurFunction(),
             unknown: "ERROR: UNKNOWN COMMAND"
         };
 
@@ -511,6 +511,7 @@ CHANGELOG:
                 outputText = responses.unknown;
             }
 
+            
             // Create and append the user command line immediately
             const userDiv = document.createElement('div');
             userDiv.innerHTML = `<span class="user-command">&gt; ${cmd}</span>`;
@@ -521,8 +522,10 @@ CHANGELOG:
             sysDiv.classList.add('system-output');
             output.appendChild(sysDiv);
 
-            // Type out the system output
-            typeWriter(sysDiv, outputText, 15);
+            if (cmd != 'minotaur'){ //or any other response that warrants skipping the typewriter
+                // Type out the system output
+                typeWriter(sysDiv, outputText, 15);
+            }
 
             output.scrollTop = output.scrollHeight;
         }
@@ -594,7 +597,7 @@ CHANGELOG:
                 loginError.style.display = 'block';
             }
         }
-        function activateRedMode() {
+        function minotaurFunction() { //MINOTAUR function
             if (redMode) return;
             redMode = true;
 
@@ -619,8 +622,10 @@ CHANGELOG:
             document.head.appendChild(styleTag);
             output.innerHTML = "MINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURM██OTAURMINOTAURMINOTAURMINOTAURMINOT██RMINOTAUR\nMINOTAURMI███AURMINOTAURMINOTAURMINOTAURMIN███URMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURM████AURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMIN██████INOT█████NOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAUR███OT█URMINOTAU█MI███AURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOT█URMINOTAU█MINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\n"
             commandInput.disabled = true
-            commandInput.setStyle("background: red")
+            commandInput.style.backgroundColor = 'red'
             //Rip MP3 and play it here?
+            const audio = new Audio('src/audio/ShutMeDown');
+            audio.play();
         }
 
 
