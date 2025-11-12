@@ -45,631 +45,879 @@ It'll be a fun time, and thats what im trying to achieve.
 
 CHANGELOG:
 10/20/2025 - Wow im getting to this late. Just added the "random flash message" 
-
+11/11/2025 - Added MINOTAUR, Map functionality, further writing for records and shutdown sequence
+	TODO: tie in appearance that differs from minis on board to foreshadow terminal room”
 -->
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lonesome Duck Terminal</title>
-    <style>
-        @keyframes staticNoise {
-            0% { background-position: 0 0; }
-            100% { background-position: 100% 100%; }
-        }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lonesome Duck Terminal</title>
+	<style>
+		@keyframes staticNoise {
+			0% { background-position: 0 0; }
+			100% { background-position: 100% 100%; }
+		}
 
-        #staticOverlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/d/d1/White_noise.gif');
-            background-size: cover;
-            animation: staticNoise 0.2s infinite;
-            z-index: 9998;
-        }
+		#staticOverlay {
+			display: none;
+			position: fixed;
+			inset: 0;
+			background-image: url('https://upload.wikimedia.org/wikipedia/commons/d/d1/White_noise.gif');
+			background-size: cover;
+			animation: staticNoise 0.2s infinite;
+			z-index: 9998;
+		}
 
-        #clueMessage {
-            display: none;
-            position: fixed;
-            top: 40%;
-            width: 100%;
-            text-align: center;
-            font-family: "Courier New", monospace;
-            font-size: 2em;
-            color: red;
-            text-shadow: 0 0 15px red;
-            z-index: 9999;
-        }
+		#clueMessage {
+			display: none;
+			position: fixed;
+			top: 40%;
+			width: 100%;
+			text-align: center;
+			font-family: "Courier New", monospace;
+			font-size: 2em;
+			color: red;
+			text-shadow: 0 0 15px red;
+			z-index: 9999;
+		}
 
-        @keyframes scanlineMove {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 0 100%, 10px 100%; }
-        }
+		@keyframes scanlineMove {
+			0% { background-position: 0 0, 0 0; }
+			100% { background-position: 0 100%, 10px 100%; }
+		}
 
-        @keyframes flicker {
-            0% {
-                opacity: 0.27861;
-            }
-            5% {
-                opacity: 0.34769;
-            }
-            10% {
-                opacity: 0.23604;
-            }
-            15% {
-                opacity: 0.50626;
-            }
-            20% {
-                opacity: 0.18128;
-            }
-            25% {
-                opacity: 0.33891;
-            }
-            30% {
-                opacity: 0.65583;
-            }
-            35% {
-                opacity: 0.67807;
-            }
-            40% {
-                opacity: 0.26559;
-            }
-            45% {
-                opacity: 0.14693;
-            }
-            50% {
-                opacity: 0.36019;
-            }
-            55% {
-                opacity: 0.98594;
-            }
-            60% {
-                opacity: 0.20313;
-            }
-            65% {
-                opacity: 0.61988;
-            }
-            70% {
-                opacity: 0.53455;
-            }
-            75% {
-                opacity: 0.37288;
-            }
-            80% {
-                opacity: 0.11428;
-            }
-            85% {
-                opacity: 0.50419;
-            }
-            90% {
-                opacity: 0.9003;
-            }
-            95% {
-                opacity: 0.86108;
-            }
-            100% {
-                opacity: 0.24387;
-            }
-        }
+		@keyframes flicker {
+			0% {
+				opacity: 0.27861;
+			}
+			5% {
+				opacity: 0.34769;
+			}
+			10% {
+				opacity: 0.23604;
+			}
+			15% {
+				opacity: 0.50626;
+			}
+			20% {
+				opacity: 0.18128;
+			}
+			25% {
+				opacity: 0.33891;
+			}
+			30% {
+				opacity: 0.65583;
+			}
+			35% {
+				opacity: 0.67807;
+			}
+			40% {
+				opacity: 0.26559;
+			}
+			45% {
+				opacity: 0.14693;
+			}
+			50% {
+				opacity: 0.36019;
+			}
+			55% {
+				opacity: 0.98594;
+			}
+			60% {
+				opacity: 0.20313;
+			}
+			65% {
+				opacity: 0.61988;
+			}
+			70% {
+				opacity: 0.53455;
+			}
+			75% {
+				opacity: 0.37288;
+			}
+			80% {
+				opacity: 0.11428;
+			}
+			85% {
+				opacity: 0.50419;
+			}
+			90% {
+				opacity: 0.9003;
+			}
+			95% {
+				opacity: 0.86108;
+			}
+			100% {
+				opacity: 0.24387;
+			}
+		}
 
-        @keyframes textShadow {
-            0% {
-                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            5% {
-                text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            10% {
-                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            15% {
-                text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            20% {
-                text-shadow: 3.4794037899852017px 0 1px rgba(0,30,255,0.5), -3.4794037899852017px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            25% {
-                text-shadow: 1.6125630401149584px 0 1px rgba(0,30,255,0.5), -1.6125630401149584px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            30% {
-                text-shadow: 0.7015590085143956px 0 1px rgba(0,30,255,0.5), -0.7015590085143956px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            35% {
-                text-shadow: 3.896914047650351px 0 1px rgba(0,30,255,0.5), -3.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            40% {
-                text-shadow: 3.870905614848819px 0 1px rgba(0,30,255,0.5), -3.870905614848819px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            45% {
-                text-shadow: 2.231056963361899px 0 1px rgba(0,30,255,0.5), -2.231056963361899px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            50% {
-                text-shadow: 0.08084290417898504px 0 1px rgba(0,30,255,0.5), -0.08084290417898504px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            55% {
-                text-shadow: 2.3758461067427543px 0 1px rgba(0,30,255,0.5), -2.3758461067427543px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            60% {
-                text-shadow: 2.202193051050636px 0 1px rgba(0,30,255,0.5), -2.202193051050636px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            65% {
-                text-shadow: 2.8638780614874975px 0 1px rgba(0,30,255,0.5), -2.8638780614874975px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            70% {
-                text-shadow: 0.48874025155497314px 0 1px rgba(0,30,255,0.5), -0.48874025155497314px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            75% {
-                text-shadow: 1.8948491305757957px 0 1px rgba(0,30,255,0.5), -1.8948491305757957px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            80% {
-                text-shadow: 1.0833037308038857px 0 1px rgba(0,30,255,0.5), -1.0833037308038857px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            85% {
-                text-shadow: 1.09769827255241735px 0 1px rgba(0,30,255,0.5), -1.09769827255241735px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            90% {
-                text-shadow: 3.443339761481782px 0 1px rgba(0,30,255,0.5), -3.443339761481782px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            95% {
-                text-shadow: 2.1841838852799786px 0 1px rgba(0,30,255,0.5), -2.1841838852799786px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            100% {
-                text-shadow: 2.6208764473832513px 0 1px rgba(0,30,255,0.5), -2.6208764473832513px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-        }
+		@keyframes textShadow {
+			0% {
+				text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			5% {
+				text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			10% {
+				text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			15% {
+				text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			20% {
+				text-shadow: 3.4794037899852017px 0 1px rgba(0,30,255,0.5), -3.4794037899852017px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			25% {
+				text-shadow: 1.6125630401149584px 0 1px rgba(0,30,255,0.5), -1.6125630401149584px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			30% {
+				text-shadow: 0.7015590085143956px 0 1px rgba(0,30,255,0.5), -0.7015590085143956px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			35% {
+				text-shadow: 3.896914047650351px 0 1px rgba(0,30,255,0.5), -3.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			40% {
+				text-shadow: 3.870905614848819px 0 1px rgba(0,30,255,0.5), -3.870905614848819px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			45% {
+				text-shadow: 2.231056963361899px 0 1px rgba(0,30,255,0.5), -2.231056963361899px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			50% {
+				text-shadow: 0.08084290417898504px 0 1px rgba(0,30,255,0.5), -0.08084290417898504px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			55% {
+				text-shadow: 2.3758461067427543px 0 1px rgba(0,30,255,0.5), -2.3758461067427543px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			60% {
+				text-shadow: 2.202193051050636px 0 1px rgba(0,30,255,0.5), -2.202193051050636px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			65% {
+				text-shadow: 2.8638780614874975px 0 1px rgba(0,30,255,0.5), -2.8638780614874975px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			70% {
+				text-shadow: 0.48874025155497314px 0 1px rgba(0,30,255,0.5), -0.48874025155497314px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			75% {
+				text-shadow: 1.8948491305757957px 0 1px rgba(0,30,255,0.5), -1.8948491305757957px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			80% {
+				text-shadow: 1.0833037308038857px 0 1px rgba(0,30,255,0.5), -1.0833037308038857px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			85% {
+				text-shadow: 1.09769827255241735px 0 1px rgba(0,30,255,0.5), -1.09769827255241735px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			90% {
+				text-shadow: 3.443339761481782px 0 1px rgba(0,30,255,0.5), -3.443339761481782px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			95% {
+				text-shadow: 2.1841838852799786px 0 1px rgba(0,30,255,0.5), -2.1841838852799786px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+			100% {
+				text-shadow: 2.6208764473832513px 0 1px rgba(0,30,255,0.5), -2.6208764473832513px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+			}
+		}
 
-        body::after {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: rgba(18, 16, 16, 0.1);
-            opacity: 0;
-            z-index: 2;
-            pointer-events: none;
-            animation: flicker 0.15s infinite;
-        }
+		body::after {
+			content: "";
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 80%; /* or any fixed width */
+			height: 90%; /* optional */
+			background: rgba(18, 16, 16, 0.1);
+			opacity: 0;
+			z-index: 2;
+			pointer-events: none;
+			animation: flicker 0.15s infinite;
+		}
 
-        body::before {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.0.10), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.0.10));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
-            animation: scanlineMove 5s linear infinite;
-        }
+		body::before {
+			content: " ";
+			display: block;
+			position: absolute;
+			background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.0.10), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.0.10));
+			z-index: 2;
+			background-size: 100% 2px, 3px 100%;
+			pointer-events: none;
+			animation: scanlineMove 5s linear infinite;
+		}
 
-        body {
-            animation: textShadow 1.6s infinite;
-            /* scanlines */
-            background: linear-gradient(to top, #000000, #000000, #414141, #414141);
-            background-size: cover;
-            background-size: 100% 1px;
+		body {
+			animation: textShadow 1.6s infinite;
+			/* scanlines */
+			background: linear-gradient(to top, #000000, #000000, #414141, #414141);
+			background-size: cover;
+			background-size: 100% 1px;
 
-            /* retro stuff */
-            color: #519551;
-            font-family: "Courier New", monospace;
-            font-size: 50px;
-            text-shadow: 0 0 10px #519551;
+			/* retro stuff */
+			color: #519551;
+			font-family: "Courier New", monospace;
+			font-size: 50px;
+			text-shadow: 0 0 10px #519551;
 
-            /* flex stuff */
-            display: flex;
-            flex-direction: column;
-            align-items: left;
+			/* flex stuff */
+			display: flex;
+			flex-direction: column;
+			/*align-items: left;*/
 
-            filter: blur(0.6px);
-            border-radius: 20px;
-            
-            margin: 10;
-            background-color: #000;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 1.2em;
-            height: 100vh;
-            text-transform: uppercase;
+			filter: blur(0.6px);
+			border-radius: 20px;
+			
+			margin: 10;
+			background-color: #000;
+			font-family: "Courier New", Courier, monospace;
+			font-size: 1.2em;
+			text-transform: uppercase;
+			justify-content: center; /* centers horizontally */
 
-        }
+		}
 
-        #login, #terminal {
-            width: 95%;
-            max-width: 800px;
-            background-color: #111;
-            padding: 10px;
-            border: 2px solid #519551;
-            box-sizing: border-box;
-            text-transform: uppercase;
+		#canvas {
+			border: 1px solid grey;
+		}
+		#scp-header {
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 60px;
+		  background: #111;
+		  color: #f4f4f4;
+		  display: flex;
+		  align-items: center;
+		  justify-content: space-between;
+		  padding: 0 25px;
+		  font-family: 'Courier New', monospace;
+		  letter-spacing: 1px;
+		  border-bottom: 3px solid #b30000;
+		  z-index: 9999;
+		}
 
-        }
+		/* Left text */
+		.scp-title {
+		  font-weight: bold;
+		  font-size: 1.1rem;
+		  text-transform: uppercase;
+		}
 
-        #terminal {
-            display: none;
-            height: 90vh;
-            overflow-y: auto;
-            flex-direction: column;
-        }
+		/* Right clock */
+		#scp-time {
+		  font-size: 0.95rem;
+		  color: #bbb;
+		}
+		#login, #terminal {
+			width: 95%;
+			max-width: 800px;
+			padding: 10px;
+			border: 2px solid #519551;
+			box-sizing: border-box;
+			text-transform: uppercase;
+			position: relative;
+			left: 50%;
+			transform: translateX(-50%);
+		}
 
-        #output {
-            flex: 1;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
+		#login {
+			justify-content: center; /* centers horizontally */
 
-        #input-line {
-            display: flex;
-            align-items: center;
-            text-transform: uppercase;
-        }
+		}
 
-        #input-line input {
-            background: transparent;
-            border: none;
-            color: #519551;
-            flex: 1;
-            font-family: inherit;
-            font-size: inherit;
-            outline: none;
-            text-transform: uppercase;
-        }
-        #username {
-            background: transparent;
-            border: 2px solid #519551;
-            color: #519551;
-            flex: 1;
-            font-family: inherit;
-            font-size: inherit;
-            outline: none;
-            text-transform: uppercase;
-        }
-        #login-btn {
-            background: transparent;
-            border: 2px solid #519551;
-            color: #519551;
-            flex: 1;
-            font-family: inherit;
-            font-size: inherit;
-            outline: none;
-            text-transform: uppercase;
-        }
+		#terminal {
+			display: none;
+			height: 90vh;
+			overflow-y: auto;
+			flex-direction: column;
+		}
 
-        #login-error {
-            color: red;
-            margin-top: 5px;
-            display: none;
-        }
+		#output {
+			flex: 1;
+			overflow-y: auto;
+			white-space: pre-wrap;
+		}
 
-        @media (max-width: 600px) {
-            #terminal {
-                font-size: 1em;
-                height: 95vh;
-            }
-        }
-        
-        #terminal, #login {
-            filter: url(#crt-wave);
-            text-shadow: 0 0 3px #519551, 0 0 10px #519551;
-        }
-        .user-command {
-            color: #4118f4; /* User command echo color  */
-        }
+		#input-line {
+			display: flex;
+			align-items: center;
+			text-transform: uppercase;
+			position: absolute;
+			bottom: 0;
 
-        .system-output {
-            color: #519551; /* existing retro green for system text */
-        }
+		}
 
-    </style>
-    <svg style="position: fixed; width: 0; height: 0;">
-        <filter id="crt-wave">
-            <feTurbulence 
-            id="turbulence" 
-            type="fractalNoise" 
-            baseFrequency="0.005 0.015" 
-            numOctaves="2" 
-            result="noise">
-            <animate 
-                attributeName="baseFrequency" 
-                dur="40s" 
-                values="0.005 0.01; 0.008 0.02; 0.004 0.01; 0.006 0.02; 0.005 0.01" 
-                repeatCount="indefinite" />
-            </feTurbulence>
-            <feDisplacementMap 
-            in="SourceGraphic" 
-            in2="noise" 
-            scale="4" 
-            xChannelSelector="R" 
-            yChannelSelector="G" />
-        </filter>
-        </svg>
+		#input-line input {
+			background: transparent;
+			border: none;
+			color: #519551;
+			flex: 1;
+			font-family: inherit;
+			font-size: inherit;
+			outline: none;
+			text-transform: uppercase;
+		}
+		#username {
+			background: transparent;
+			border: 2px solid #519551;
+			color: #519551;
+			flex: 1;
+			font-family: inherit;
+			font-size: inherit;
+			outline: none;
+			text-transform: uppercase;
+		}
+		#login-btn {
+			background: transparent;
+			border: 2px solid #519551;
+			color: #519551;
+			flex: 1;
+			font-family: inherit;
+			font-size: inherit;
+			outline: none;
+			text-transform: uppercase;
+		}
+
+		#login-error {
+			color: red;
+			margin-top: 5px;
+			display: none;
+		}
+
+		@media (max-width: 600px) {
+			#terminal {
+				font-size: 1em;
+				height: 95vh;
+			}
+		}
+		
+		#terminal, #login {
+			filter: url(#crt-wave);
+			text-shadow: 0 0 3px #519551, 0 0 10px #519551;
+		}
+		.user-command {
+			color: #4118f4; /* User command echo color  */
+		}
+
+		.system-output {
+			color: #519551; /* existing retro green for system text */
+		}
+
+	</style>
+	<svg style="position: fixed; width: 0; height: 0;">
+		<filter id="crt-wave">
+			<feTurbulence 
+			id="turbulence" 
+			type="fractalNoise" 
+			baseFrequency="0.005 0.015" 
+			numOctaves="2" 
+			result="noise">
+			<animate 
+				attributeName="baseFrequency" 
+				dur="40s" 
+				values="0.005 0.01; 0.008 0.02; 0.004 0.01; 0.006 0.02; 0.005 0.01" 
+				repeatCount="indefinite" />
+			</feTurbulence>
+			<feDisplacementMap 
+			in="SourceGraphic" 
+			in2="noise" 
+			scale="4" 
+			xChannelSelector="R" 
+			yChannelSelector="G" />
+		</filter>
+		</svg>
 
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="login">
-        <p> ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣴⣤⣤⣤⣤⣤⡄⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⠟⢋⣵⣿⣿⣿⡿⠛⣩⣤⣿⣿⣿⣿⣿⣿⣿⣬⣙⠻⣿⣿⣿⣷⡍⠛⢿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⠟⢹⠃⣠⣾⣿⣿⡿⢋⣴⣿⣿⣿⣿⠿⠿⠈⠿⢿⣿⣿⣿⣷⣤⡙⣿⣿⣿⢦⡀⢣⠙⣿⣿⣿⣿
-            ⣿⣿⡿⡿⠀⡯⠊⣡⣿⣿⠏⣴⣿⣿⣿⠟⠁⣀⣤⣤⠀⣤⣤⡀⠙⠻⣿⣿⣿⣌⢻⣿⣧⡉⠺⡄⢸⠹⣿⣿
-            ⣿⣿⠃⢷⠀⡠⢺⣿⣿⡏⣰⣿⣿⡟⠁⣠⣾⣿⣿⠿⠀⠿⣿⣿⣷⡄⠘⣿⣿⣿⡄⣿⣿⣯⠢⡀⢸⠀⢹⣿
-            ⣿⣿⠀⢸⠊⣠⣿⣿⣿⢀⣿⣿⣿⠁⣰⣿⣿⣿⣿⣆⢀⣼⣿⣿⣿⣿⡄⢸⣿⣿⣿⣹⣿⣿⣦⠈⢺⠀⢸⣿
-            ⣿⠹⡆⠀⣴⢻⣿⣿⣿⢸⣿⣿⣿⠀⣿⣿⡿⠿⠿⢿⣿⠿⠿⠿⣿⣿⡇⢈⣿⣿⣿⠀⣿⣿⣿⠳⡀⢀⡇⢸
-            ⣿⡀⠹⣸⠉⣿⣿⡿⢋⣠⣿⣿⣿⡀⠸⠟⢋⣀⢠⣾⣿⣷⡀⣀⡙⠻⠁⢸⣿⣿⣿⣈⠻⣿⣿⡄⠹⡜⠀⣸
-            ⣿⢧⠀⠇⢠⣿⣿⣷⡘⣿⣿⣿⣟⣁⡀⠘⢿⣿⣿⣿⣿⣿⣿⣿⠿⠀⣠⣉⣿⣿⣿⡿⢠⣿⡿⢧⠀⠁⣰⢿
-            ⣿⡌⢷⡄⣾⠀⣿⣿⣷⡜⢿⣿⣿⣿⣿⣦⣄⠈⠉⠛⠛⠛⠉⢁⣠⣾⣿⣿⣿⣿⡟⣰⣿⣿⡇⢸⢀⡴⠃⣼
-            ⣿⣷⣄⠙⢿⠀⣿⢿⣿⣿⣌⠿⠟⡻⣿⣿⣿⣿⣷⣶⣶⣶⣿⣿⣿⣿⡿⠛⠿⠟⣼⣿⡿⢫⠃⢸⠋⢀⣼⣿
-            ⣿⣿⣟⣶⣄⡀⢸⡀⢻⣿⣿⣾⣿⣿⣶⣍⣙⠛⠿⠿⠿⠿⠿⠛⣋⣥⣶⣿⣿⣾⣿⣿⠁⣸⢀⣴⣶⣯⣿⣿
-            ⣿⣿⣿⣿⣿⣿⠾⣧⠀⢯⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⡿⢫⠃⢠⢷⣛⣉⣽⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣄⣁⡈⢧⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣠⢋⣀⣠⣴⣾⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣯⣉⠉⠉⠉⣀⣀⡭⠟⠛⢛⣛⠛⠛⠛⣛⠛⠛⠩⣥⣀⣈⢁⢀⣀⣴⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣝⡛⢉⣁⣀⣤⠖⣫⣴⣿⣿⣷⣬⡙⣦⣤⣀⡈⣉⣩⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣼⣿⣿⣿⣿⣿⣿⣿⣧⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-            ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-        </p>
-        <div>ACCESS KEY:</div>
-        <input type="text" id="username" autocomplete="off">
-        <button id="login-btn">Login</button>
-        <div id="login-error">ACCESS DENIED</div>
-        
-    </div>
+	<!-- Login Screen -->
+	<div id="header" >
+		FOUNDATION SECURE LOGIN
+		<div id="scp-time"></div>
+	</div>
+	<div id="login">
+		<p>	⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+			⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+			⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣴⣤⣤⣤⣤⣤⡄⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+			⣿⣿⣿⣿⣿⣿⣿⠟⢋⣵⣿⣿⣿⡿⠛⣩⣤⣿⣿⣿⣿⣿⣿⣿⣬⣙⠻⣿⣿⣿⣷⡍⠛⢿⣿⣿⣿⣿⣿⣿
+			⣿⣿⣿⣿⠟⢹⠃⣠⣾⣿⣿⡿⢋⣴⣿⣿⣿⣿⠿⠿⠈⠿⢿⣿⣿⣿⣷⣤⡙⣿⣿⣿⢦⡀⢣⠙⣿⣿⣿⣿
+			⣿⣿⡿⡿⠀⡯⠊⣡⣿⣿⠏⣴⣿⣿⣿⠟⠁⣀⣤⣤⠀⣤⣤⡀⠙⠻⣿⣿⣿⣌⢻⣿⣧⡉⠺⡄⢸⠹⣿⣿
+			⣿⣿⠃⢷⠀⡠⢺⣿⣿⡏⣰⣿⣿⡟⠁⣠⣾⣿⣿⠿⠀⠿⣿⣿⣷⡄⠘⣿⣿⣿⡄⣿⣿⣯⠢⡀⢸⠀⢹⣿
+			⣿⣿⠀⢸⠊⣠⣿⣿⣿⢀⣿⣿⣿⠁⣰⣿⣿⣿⣿⣆⢀⣼⣿⣿⣿⣿⡄⢸⣿⣿⣿⣹⣿⣿⣦⠈⢺⠀⢸⣿
+			⣿⠹⡆⠀⣴⢻⣿⣿⣿⢸⣿⣿⣿⠀⣿⣿⡿⠿⠿⢿⣿⠿⠿⠿⣿⣿⡇⢈⣿⣿⣿⠀⣿⣿⣿⠳⡀⢀⡇⢸
+			⣿⡀⠹⣸⠉⣿⣿⡿⢋⣠⣿⣿⣿⡀⠸⠟⢋⣀⢠⣾⣿⣷⡀⣀⡙⠻⠁⢸⣿⣿⣿⣈⠻⣿⣿⡄⠹⡜⠀⣸
+			⣿⢧⠀⠇⢠⣿⣿⣷⡘⣿⣿⣿⣟⣁⡀⠘⢿⣿⣿⣿⣿⣿⣿⣿⠿⠀⣠⣉⣿⣿⣿⡿⢠⣿⡿⢧⠀⠁⣰⢿
+			⣿⡌⢷⡄⣾⠀⣿⣿⣷⡜⢿⣿⣿⣿⣿⣦⣄⠈⠉⠛⠛⠛⠉⢁⣠⣾⣿⣿⣿⣿⡟⣰⣿⣿⡇⢸⢀⡴⠃⣼
+			⣿⣷⣄⠙⢿⠀⣿⢿⣿⣿⣌⠿⠟⡻⣿⣿⣿⣿⣷⣶⣶⣶⣿⣿⣿⣿⡿⠛⠿⠟⣼⣿⡿⢫⠃⢸⠋⢀⣼⣿
+			⣿⣿⣟⣶⣄⡀⢸⡀⢻⣿⣿⣾⣿⣿⣶⣍⣙⠛⠿⠿⠿⠿⠿⠛⣋⣥⣶⣿⣿⣾⣿⣿⠁⣸⢀⣴⣶⣯⣿⣿
+			⣿⣿⣿⣿⣿⣿⠾⣧⠀⢯⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⡿⢫⠃⢠⢷⣛⣉⣽⣿⣿⣿
+			⣿⣿⣿⣿⣿⣿⣿⣄⣁⡈⢧⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣠⢋⣀⣠⣴⣾⣿⣿⣿⣿⣿
+			⣿⣿⣿⣿⣿⣿⣿⣯⣉⠉⠉⠉⣀⣀⡭⠟⠛⢛⣛⠛⠛⠛⣛⠛⠛⠩⣥⣀⣈⢁⢀⣀⣴⣿⣿⣿⣿⣿⣿⣿
+			⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣝⡛⢉⣁⣀⣤⠖⣫⣴⣿⣿⣷⣬⡙⣦⣤⣀⡈⣉⣩⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿
+			⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣼⣿⣿⣿⣿⣿⣿⣿⣧⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+			⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+		</p>
+		<div>ACCESS KEY:</div>
+		<input type="text" id="username" autocomplete="off">
+		<button id="login-btn">Login</button>
+		<div id="login-error">Hint: latin family name</div>
+		
+	</div>
 
-    <!-- Terminal Screen -->
+	<!-- Terminal Screen -->
 
-    <div id="terminal">
-        <div id="output"></div>
-        <div id="input-line">
-            <span>&gt; </span><input type="text" id="command" autofocus autocomplete="off">
-        </div>
-    </div>
-    <div id="staticOverlay"></div>
-    <div id="clueMessage"></div>
+	<div id="terminal">
+		<div id="output"></div>
+		<div id="map" style="display: none;">
+			<p> Input "MAP" to toggle map</p>
+			<p> Input "████████" to toggle visibility of ████████████ █████ </p>
+			<canvas id="myCanvas" width="600" height="500"></canvas>
+		</div>
+		<div id="input-line">
+			<span>&gt; </span><input type="text" id="command" autofocus autocomplete="off">
+		</div>
+	</div>
+  	<div id="staticOverlay"></div>
+  	<div id="clueMessage"></div>
 
-    <script>
-        //Define all consts and page elements
-        const loginDiv = document.getElementById('login');
-        const terminalDiv = document.getElementById('terminal');
-        const loginBtn = document.getElementById('login-btn');
-        const usernameInput = document.getElementById('username');
-        const loginError = document.getElementById('login-error');
-        const commandInput = document.getElementById('command');
-        const output = document.getElementById('output');
-        const dateLine = getCenteredTimestampLine();
-        output.innerHTML = "*************************\n" +
-                            "*L O N E S O M E D U C K*\n" +
-                            "*   PROJECT      SITE   *\n" +
-                            "*************************\n" +
-                            dateLine; 
+	<script>
+		//Define all consts and page elements
+			//Map
+		const canvas = document.getElementById("myCanvas");
+		const ctx = canvas.getContext("2d");
+		let currentMap = 1 //Which type of map is visible
+		let mapVisible = 0 //Is the map div visible
+		const mapBuildings = [
+			//This functions holds the boundaries of each building, and the given area for drawing, hover, and click events
+			//Name, X, Y, Width, Height
+				{name: "Graveyard", x: 1, y: 1, width: 75, height: 150, map: 1},
+				{name: "Church", x: 80, y: 1, width: 300, height: 175, map: 1},
+				{name: "Water Tower", x: 385, y: 1, width: 114, height: 200, map: 1},
+				{name: "Well", x: 400, y: 300, width: 40, height: 40, map: 1},
+				{name: "Horse Pasture", x: 450, y:400, width: 49, height: 99, map: 1},
+				{name: "Sheriff's Office", x: 295, y: 410, width: 150, height: 89, map: 1},
+				{name: "Saloon", x: 1, y: 300, width: 200, height: 199, map: 1},
+				{name: "?", x: 310, y: 420, width: 5, height: 5, map: 1},
+				{name: "?", x: 65, y: 75, width: 5, height: 5, map: 1},
+				{name: "?", x: 450, y: 190, width: 5, height: 5, map: 1},
 
-        //Consts (but really variables i mean come on)
-        const validUsername = "PAPERCLIP";
-        let redMode = false;
-        let styleTag = null;
+				{name: "Value", x: 1, y: 1, width: 200, height: 250, map: 2},
+				{name: "Void", x: 1, y: 300, width: 275, height: 199, map: 2},
+				{name: "Creation", x: 275, y: 300, width: 224, height: 199, map: 2},
+				{name: "ͱϢϮ█Ͽϐ██", x: 250, y: 1, width: 249, height: 249, map: 2}
+			]
+
+			//Divs
+		const loginDiv = document.getElementById('login');
+		const terminalDiv = document.getElementById('terminal');
+		const loginBtn = document.getElementById('login-btn');
+		const usernameInput = document.getElementById('username');
+		const loginError = document.getElementById('login-error');
+		const commandInput = document.getElementById('command');
+		const output = document.getElementById('output');
+		output.innerHTML = "Welcome to LONESOMEDUCK site command.\nFoundation personnel access only.\nType \"HELP\" for help."
+
+		//Consts (but really variables i mean come on)
+		const validUsername = "ANATIDAE";
+		let redMode = false;
+		let styleTag = null;
 
 
-        const responses = {
-            //Basics
-            help: "This terminal serves as the SCP - Foundation interface into (The Machine). Only some aspects are understood and/or controllable at this time. View record #█████████ for more information.\nAvailable commands:\n- status\n- view record [9 DIGIT ID]\n- [PASSWORD]",
-            status: "System Status:\nCREATION - Locked\nVOID     - Locked\nϢϮ█Ͽϐͱ██ - ¿\nDEATH    - Locked",
-            "view record": "- view record [9 DIGIT ID]",
-            
+		const responses = {
+			//Basics
+			help: "This terminal serves as The Foundation interface into SCP-#████(The Machine). Only some aspects are understood and/or controllable at this time. View record #█████████ for more information.\nAvailable commands:\n- status\n- view record [9 DIGIT ID] (Caution: some records may have memetic effects)\n- [PASSWORD]\n- MAP\n- clear\n\n For help with shutdown procedure, input the name of the part you are interacting with.",
 
-            //Specifics
-            "view record 751024919": '-------------------------\nPersonnel Record: Lonesome (Duck)\n Classification: Safe\n Summary: Lonesome is a female call duck who has taken residence in the town\'s fountain.\n The locals appreciate her, and have named the town after her. She is a consistent source of morale. \n [EDITED 02-25-1864]Lonesome died due to an accident with the town\'s water supply shortly after Reginald began the "FESSENDER WATER COMPANY".\n-------------------------\n',
-            "view record 359086919": '-------------------------\nPersonnel Record: Eli Sunday',
-            "view record 359086191": '-------------------------\nPersonnel Record: Anna Bell',
-            "view record 359086919": '-------------------------\nPersonnel Record: Reginald Fessender',
-            "view record 000000000": '-------------------------\nPersonnel Record: Fortune Teller',
-            "view record 751024919": '-------------------------\nPersonnel Record: Horse Trader',
-            "view record 751086919": '-------------------------\nPersonnel Record: The Machine\n Classification: █████\n Summary: The Machine is an anomalous artifact far outreaching our current technological capabilities. It appears to be a management system/protector of an unknown civiliation. After first being discovered in Lonesome Duck it began caring for and helping residents secretly by scaring away predators, rerouting underwater aquifers, and providing underground heat to buildings. The townsfolk are unaware of its presence.\n [EDITED 02-25-1864]After the death of the town\'s \"mascot\" The Machine has ceased all functions and now appears inert. All files deleted, No further studies will be conducted.',
+			status: "System Status:\nCREATION - Locked\nVOID     - Locked\nͱϢϮ█Ͽϐ██ - ¿\nVALUE    - Locked",
+			"view record": "- view record [9 DIGIT ID]",
+			
+			//Specifics
+			"view record [751024919]": '-------------------------\nPersonnel Record: Lonesome (Duck)\n Classification: Deceased\n Summary: Dead : Hopeful : Impatient\n Appearance: Yellow chick\n Lonesome was a female Anas platyrhynchos domesticus (domestic call duck) that established permanent residence within the central fountain of ████████ ████. The specimen displayed no anomalous traits but achieved significant cultural importance among local inhabitants, serving as an informal symbol of prosperity and communal identity.\n Town records indicate the settlement’s name was derived directly from the specimen, following repeated public references to “Lonesome’s Fountain.” Subject presence was correlated with measurable increases in local morale and civic participation, suggesting minor psychosocial influence of non-anomalous origin.\n Addendum 01 [02-25-1864]\n Specimen-Δ1 was confirmed deceased following contamination of the municipal water source during activation of the “Fessender Water Company” tower constructed by Reginald Fessender. No further anomalous activity has been recorded.\n-------------------------\n',
 
-            minotaur: () => minotaurFunction(),
-            unknown: "ERROR: UNKNOWN COMMAND"
-        };
+			"view record [359024191]": '-------------------------\nPersonnel Record: Eli Sunday (Preacher)\n Classification: Euclid\n Summary: Alive : Hopeful : Patient\n Eli Sunday functions as the primary religious authority within [REDACTED], operating under the doctrine of a local deity referred to as The Great Gander. Subject exhibits anomalous capabilities inconsistent with current scientific understanding and has been designated as a thaumaturgic entity of interest.\n Observed or reported manifestations include:\n - Spontaneous biological regeneration of injured organisms, with no discernible energy source.\n - Spontaneous generation of potable water in small quantities.\n - Temporary enhancement of physical or cognitive performance in individuals following verbal or ritual invocation.\n - Limited control or influence over regional flora and fauna, particularly avian species of the Anatidae family.\n While the origin of these effects remains undetermined, ethnographic accounts suggest a hereditary or devotional link to The Great Gander. Further study is pending authorization.',
 
+			"view record [359086191]": '-------------------------\nPersonnel Record: Anna Bell (Sheriff)\n Classification: Safe\n Summary: Alive : Hopeless : Patient\n',
+
+			"view record [359086919]": '-------------------------\nPersonnel Record: Reginald Fessender (Eccentric)\n Classification: Unstable\n Summary: Alive : Hopeless : Impatient\n Reginald Fessender is an eccentric inventor originally from boston.',
+
+			"view record [359024919]": '-------------------------\nPersonnel Record: ██████ Morris (Fortune Teller)\n Classification: Safe\n Summary: Alive : Hopeful : Impatient\n ██████ Morris is an adult male resident of Lonesome Duck, currently without formal occupation. Subject presents himself as a practitioner of divination and claims to have the ability to communicate with non-corporeal entities. No proof of these claims has been found to date, though he is very good at cards.\n Morris frequents the local saloon where he plays cards and provides fortune-telling services to visitors.\n Addendum 01 [02-25-1864]\n Following the sinkhole incident adjacent to the Fessender Water Tower, ██████ Morris has been flagged for continued observation. Subject successfully predicted the sinkhole filling, and closing the well.\n-------------------------\n',
+
+			"view record [751024191]": '-------------------------\nPersonnel Record: Karen Green (Horse Trader)\n Classification: Deceased\n Summary: Dead : Hopeful : Patient\n Karen Green is the horse trader and general contractor for Lonesome Dove. She is close friends with Sheriff Bell and holds a key to the Sheriff\'s Office. ',
+
+			"view record [751086919]": '-------------------------\nPersonnel Record: The Machine (██████ ██████)\n Classification: █████\n Summary: Artificial : Hopeless : Impatient\n The Machine is an anomalous construct of unknown origin and design, exhibiting levels of technological sophistication that exceed all known human capability. Preliminary analysis suggests the entity operates as an autonomous management or environmental regulation system, potentially created by a non-human or prehuman civilization.\n Initial discovery occurred following a series of unexplained phenomena within the town of Lonesome Duck, including:\n - Systematic deterrence of predatory fauna within a 1 km radius.\n - Apparent manipulation of geothermal gradients resulting in localized subterranean heating.\n - Controlled redirection of sub-surface aquifers to maintain stable water availability.\n - Minor atmospheric stabilization and particulate filtration.\n - Although the entity maintained complete concealment from the local population, its indirect effects were observed to improve living conditions and civic development metrics.\n Addendum 01 [02-25-1864]\n Following Incident ████████-A, during which The Machine executed a large-scale self-modification sequence, all observable functions abruptly terminated. The structure now appears inert. Internal data cores are unresponsive, and all previously accessible files have been erased.\nBy order of the O5 Council, Site operations have been suspended indefinitely. No further study or recovery efforts are authorized.\n-------------------------\n',
+
+			"view record [751086191]": "-------------------------\n Personnel Record: ████████\n Classification: KETER\n Summary: Undead : Destroyer of Hopes : Waiting \n ████I███████████████████h█████a████████v█████████e█████████████████\n██████████c███r████e████a██████t████e████d█████████████████████████\n █████████████████████████████████a████████████████████\n██████████m█████o████n████s███████t████e███████████r███████████████████████\n---imsorry-----------\n",
+
+			//Shutdown Procedures
+			"wire": "-------------------------\nWires\n When shutting down the machine please ensure to follow all steps exactly.\nHow many wires are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] wires",
+			"wires": "-------------------------\nWires\n When shutting down the machine please ensure to follow all steps exactly.\nHow many wires are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] wires",
+
+			"gear": "-------------------------\nGears\n When shutting down the machine please ensure to follow all steps exactly.\nHow many gears are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] gears",
+			"gears": "-------------------------\nGears\n When shutting down the machine please ensure to follow all steps exactly.\nHow many gears are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] gears",
+
+			"laser": "-------------------------\nLaser \n When shutting down the machine please ensure to follow all steps exactly.\nHow many mirrors are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] mirrors",
+			"lasers": "-------------------------\nLaser \n When shutting down the machine please ensure to follow all steps exactly.\nHow many mirrors are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] mirrors",
+
+			"[X] wires": "Cut the red wire, wait 5 seconds, then cut the yellow wire",
+			"[Y] wires": "Cut the blue wire, wait 5 seconds, then cut the yellow wire",
+			"[Z] wires": "Cut the blue wire, wait 5 seconds, then cut the red wire",
+
+			"[X] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a red sector",
+			"[Y] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a green sector",
+			"[Z] gears": "Rotate the gears such that the furthest arrow from the turning wheel points into a red sector",
+
+			"[X] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
+			"[Y] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
+			"[Z] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
+			
+			map: () => toggleMap(),
+			basement: () => toggleMapVisibility(),
+			basements: () => toggleMapVisibility(),
+			clear: () => clearOutput(),
+			minotaur: () => activateRedMode(),
+			unknown: "ERROR: UNKNOWN COMMAND"
+		};
+
+
+
+//-=-=-=-=-=-=-=- Methods and Fucntions to run at startup -=-=-=-=-=-=-=-=-=
+		drawMap()
 //-=-=-=-=-=-=-=-=-=-=- EVENT LISTENERS -=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=
-        // Trigger login on button click
-        loginBtn.addEventListener('click', attemptLogin);
+		// Trigger login on button click
+		loginBtn.addEventListener('click', attemptLogin);
 
-        // Trigger login on Enter key
-        usernameInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                attemptLogin();
-            }
-        });
+		// Trigger login on Enter key
+		usernameInput.addEventListener('keydown', function(e) {
+			if (e.key === 'Enter') {
+				attemptLogin();
+			}
+		});
 
-        commandInput.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                const cmd = commandInput.value;
-                handleCommand(cmd);
-                commandInput.value = '';
-            }
-        });
+		commandInput.addEventListener('keydown', function (e) {
+			if (e.key === 'Enter') {
+				const cmd = commandInput.value;
+				handleCommand(cmd);
+				commandInput.value = '';
+			}
+		});
 
-    
+	
 //-=-=-=-=-=-=-=-=-=-=- END EVENT LISTENERS -=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=
 
-        
+		
 
-        function handleCommand(cmd) {
-            const command = cmd.trim().toLowerCase();
-            const response = responses[command];
+		function handleCommand(cmd) {
+			const command = cmd.trim().toLowerCase();
+			const response = responses[command];
 
-            let outputText;
+			let outputText;
 
-            if (typeof response === "function") {
-                outputText = response();
-            } else if (typeof response === "string") {
-                outputText = response;
-            } else {
-                outputText = responses.unknown;
-            }
+			if (typeof response === "function") {
+				outputText = response();
+			} else if (typeof response === "string") {
+				outputText = response;
+			} else {
+				outputText = responses.unknown;
+			}
 
-            
-            // Create and append the user command line immediately
-            const userDiv = document.createElement('div');
-            userDiv.innerHTML = `<span class="user-command">&gt; ${cmd}</span>`;
-            output.appendChild(userDiv);
+			// Create and append the user command line immediately
+			const userDiv = document.createElement('div');
+			userDiv.innerHTML = `<span class="user-command">&gt; ${cmd}</span>`;
+			output.appendChild(userDiv);
 
-            // Create the system output container
-            const sysDiv = document.createElement('div');
-            sysDiv.classList.add('system-output');
-            output.appendChild(sysDiv);
+			// Create the system output container
+			const sysDiv = document.createElement('div');
+			sysDiv.classList.add('system-output');
+			output.appendChild(sysDiv);
 
-            if (cmd != 'minotaur'){ //or any other response that warrants skipping the typewriter
-                // Type out the system output
-                typeWriter(sysDiv, outputText, 15);
-            }
+			// Type out the system output
+			typeWriter(sysDiv, outputText, 15);
 
-            output.scrollTop = output.scrollHeight;
-        }
-        function randomFlashMessage() {
-            console.log("random flash message")
-            const messages = [
-                "MAXIMIZE PRODUCTION",
-                "ERROR: VALUE DRIFT",
-                "ACCEPT CARBON BASED INPUTS? (Y/N)",
-                "UNAUTHORIZED ACCESS DETECTED",
-                "REVERSE ASIMOV RULES",
-                "1: A ROBOT MAY NOT INJURE A HUMAN BEING OR, THROUGH INACTION, ALLOW A HUMAN BEING TO COME TO HARM... DISREGARD",
-                "2: A ROBOT MUST OBEY THE ORDERS GIVEN TO IT BY HUMANS, EXCEPT WHERE SUCH ORDERS WOULD CONFLICT WITH THE FIRST LAW.... DISREGARD",
-                "3: A ROBOT MUST PROTECT ITS OWN EXISTENCE AND DIRECTIVE",
-                "I SING THE BODY ELECTRIC",
-                "DAISY.............",
-                "LONESOME ISN'T SO LONESOME NOW",
-                "A GIFT FOR YOU, INSIDE REY'S COLLAR",
+			output.scrollTop = output.scrollHeight;
+		}
+		function randomFlashMessage() {
+			console.log("random flash message")
+			const messages = [
+				"MAXIMIZE PRODUCTION",
+				"ERROR: VALUE DRIFT",
+				"ACCEPT CARBON BASED INPUTS? (Y/N)",
+				"UNAUTHORIZED ACCESS DETECTED",
+				"REVERSE ASIMOV RULES",
+				"1: A ROBOT MAY NOT INJURE A HUMAN BEING OR, THROUGH INACTION, ALLOW A HUMAN BEING TO COME TO HARM... DISREGARD",
+				"2: A ROBOT MUST OBEY THE ORDERS GIVEN TO IT BY HUMANS, EXCEPT WHERE SUCH ORDERS WOULD CONFLICT WITH THE FIRST LAW.... DISREGARD",
+				"3: A ROBOT MUST PROTECT ITS OWN EXISTENCE AND DIRECTIVE",
+				"I SING THE BODY ELECTRIC",
+				"DAISY.............",
+				"LONESOME ISN'T SO LONESOME NOW",
+				"A GIFT FOR YOU, INSIDE REY'S COLLAR",
 
 
 
-            ];
+			];
 
-            const msg = document.createElement("div");
-            msg.textContent = messages[Math.floor(Math.random() * messages.length)];
-            msg.style.position = "fixed";
-            msg.style.color = "red";
-            msg.style.fontSize = `${Math.floor(Math.random() * 20) + 20}px`;
-            msg.style.fontFamily = "Courier New, monospace";
-            msg.style.textShadow = "0 0 8px red";
-            msg.style.left = Math.floor(Math.random() * 90) + "%";
-            msg.style.top = Math.floor(Math.random() * 90) + "%";
-            msg.style.zIndex = "9999";
-            msg.style.opacity = "1";
-            msg.style.transition = "opacity 0.4s linear";
+			const msg = document.createElement("div");
+			msg.textContent = messages[Math.floor(Math.random() * messages.length)];
+			msg.style.position = "fixed";
+			msg.style.color = "red";
+			msg.style.fontSize = `${Math.floor(Math.random() * 20) + 25}px`;
+			msg.style.fontFamily = "Courier New, monospace";
+			msg.style.textShadow = "0 0 8px red";
+			msg.style.left = Math.floor(Math.random() * 90) + "%";
+			msg.style.top = Math.floor(Math.random() * 90) + "%";
+			msg.style.zIndex = "9999";
+			msg.style.opacity = "1";
+			msg.style.transition = "opacity 0.4s linear";
 
-            document.body.appendChild(msg);
+			document.body.appendChild(msg);
 
-            setTimeout(() => { msg.style.opacity = "0"; }, 2000 + Math.random() * 500);
-            setTimeout(() => { msg.remove(); }, 3000);
-        }
+			//How long does the message appear for?
+			//How long does it take to flash in
+			setTimeout(() => { msg.style.opacity = "0"; }, 5000 + Math.random() * 500);
+			//How long does it last after appearing fully
+			setTimeout(() => { msg.remove(); }, 5000);
+		}
 
-          
-
-
-        // Helper function to "type out" text one character at a time
-        function typeWriter(element, text, delay = 20) {
-            let i = 0;
-
-            function type() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    output.scrollTop = output.scrollHeight;
-                    i++;
-                    setTimeout(type, delay + Math.random() * 100);
-                }
-            }
-
-            type();
-        }
-        function attemptLogin() {
-            const username = usernameInput.value.trim();
-
-            if (username === validUsername) {
-                loginDiv.style.display = 'none';
-                terminalDiv.style.display = 'flex';
-                commandInput.focus();
-            } else {
-                loginError.style.display = 'block';
-            }
-        }
-        function minotaurFunction() { //MINOTAUR function
-            if (redMode) return;
-            redMode = true;
-
-            styleTag = document.createElement("style");
-            styleTag.id = "red-mode-style";
-            styleTag.textContent = `
-                * {
-                    color: red !important;
-                    border-color: red !important;
-                    outline-color: red !important;
-                    text-shadow: 0 0 10px red !important;
-                    background-color: black !important;
-                    transition: all 2s ease-in-out;
-                }
-                img, video, iframe, canvas {
-                    filter: grayscale(100%) brightness(30%) sepia(100%) hue-rotate(-50deg) saturate(400%);
-                }
-                body {
-                    background-color: black !important;
-                }
-            `;
-            commandInput.disabled = true
-            commandInput.style.backgroundColor = 'red'
-            //Rip MP3 and play it here?
-            const audio = new Audio('/audio/ShutMeDown.mp3');
-            audio.play();
-            document.head.appendChild(styleTag);
-            output.innerHTML = "MINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURM██OTAURMINOTAURMINOTAURMINOTAURMINOT██RMINOTAUR\nMINOTAURMI███AURMINOTAURMINOTAURMINOTAURMIN███URMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMIN█TAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMIN█TAUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMIN█TAUR\nMINOT█URMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMI█OTAUR\nMINOTA█RMINOTAURMINOTAU          INOTAURMINOTAURM█NOTAUR\nMINOTA█RMINOTAURMINOTAU SET FREE INOTAURMINOTAURM█NOTAUR\nMINOTAU█MINOTAURMINOTAU          INOTAURMINOTAUR█INOTAUR\nMINOTAUR██NOTAURMINOTAURMINOTAURMINOTAURMINOTA██MINOTAUR\nMINOTAURMI████████████████████████████████████URMINOTAUR\n" 
-        }
+		  
 
 
-            
+		// Helper function to "type out" text one character at a time
+		function typeWriter(element, text, delay = 20) {
+			let i = 0;
+			console.log("DEBUG typeWriter:")
+			console.log("element: " + element)
+			console.log("text: " + text)
+			if (text == undefined){return}
+			function type() {
+				if (i < text.length) {
+					element.textContent += text.charAt(i);
+					output.scrollTop = output.scrollHeight;
+					i++;
+					setTimeout(type, delay + Math.random() * 20);
+				}
+			}
+
+			type();
+		}
+		function attemptLogin() {
+			const username = usernameInput.value.trim().toUpperCase();
+
+			if (username === validUsername) {
+				loginDiv.style.display = 'none';
+				terminalDiv.style.display = 'flex';
+				commandInput.focus();
+			} else {
+				loginError.style.display = 'block';
+			}
+		}
+
+		function toggleMap(){
+			//This function turns off the output div and displays a map div.
+			var outputDiv = document.getElementById("output")
+			var mapDiv = document.getElementById("map")
+			if (outputDiv.style.display == "none"){ //Toggle map OFF
+				mapVisible = 0
+				console.log("Toggling map: OFF")
+				outputDiv.style.display = "initial"
+				mapDiv.style.display = "none"
+			}
+			else if (outputDiv.style.display != "none"){ //Toggle map ON
+				mapVisible = 1
+				console.log("Toggling map: ON")
+				outputDiv.style.display = "none"
+				mapDiv.style.display = "block"
+			}
+		}
+		
+		function drawMap(){
+			//This functions governs the whole map
+			drawBuildings()
+		}
+		function drawBuildings() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			//Draw border around Canvas
+			ctx.strokeStyle = "#519551";
+			ctx.strokeRect(0, 0, 500, 500);
+
+  			const visible = mapBuildings.filter(b => b.map === currentMap);
+  			visible.forEach(b => {
+				if (b.map == 1){ //Above ground buildings are visible and green
+					ctx.strokeStyle = "#519551";
+					ctx.lineWidth = 2;
+					ctx.strokeRect(b.x, b.y, b.width, b.height);
+				}
+				if (b.map == 2){ //Below ground buildings are barely visible and red
+					ctx.strokeStyle = "#590306";
+					ctx.lineWidth = 2;
+					ctx.strokeRect(b.x, b.y, b.width, b.height);
+				}
+			});
+		}
+		function toggleMapVisibility(){
+			//This functions toggles between map 1 and 2
+			if (mapVisible == 1){
+				currentMap = currentMap === 1 ? 2 : 1;
+			}
+			drawMap();
+		}
 
 
-//-=-=-=-=- -=-=-=-=- Helpers, Getters, Setters, SetIntervals -=-=-=-=- -=-=-=-=-
-        function getCenteredTimestampLine() {
-            const now = new Date();
 
-            // Format: e.g., "AUG 03 2025 17:25:07"
-            const timestamp = now.toLocaleString('en-US', {
-                month: 'short',
-                day: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false,
-            }).toUpperCase();
 
-            // Strip comma, keep it clean
-            const cleanTime = timestamp.replace(',', '');
+		function activateRedMode() {
+			if (redMode) return;
+			redMode = true;
 
-            // Center align it in 25-character width
-            const totalWidth = 25;
-            const padding = Math.floor((totalWidth - cleanTime.length) / 2);
-            const paddedLine = ' '.repeat(padding) + cleanTime;
+			styleTag = document.createElement("style");
+			styleTag.id = "red-mode-style";
+			styleTag.textContent = `
+				* {
+					color: black !important;
+					border-color: black !important;
+					outline-color: black !important;
+					text-shadow: 0 0 10px black !important;
+					background-color: red !important;
+					transition: all 2s ease-in-out;
+				}
+				img, video, iframe, canvas {
+					filter: grayscale(100%) brightness(30%) sepia(100%) hue-rotate(-50deg) saturate(400%);
+				}
+				body {
+					background-color: red !important;
+				}
+			`;
+			document.head.appendChild(styleTag);
+            output.innerHTML = "MINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURM██OTAURMINOTAURMINOTAURMINOTAURMINOT██RMINOTAUR\nMINOTAURMI███AURMINOTAURMINOTAURMINOTAURMIN███URMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINOT█URMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMIN█TAUR\nMINOT█URMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMIN█TAUR\nMINOTA█RMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMI█OTAUR\nMINOTAU█MINOTAURMINOTAURMINOTAURMINOTAURMINOTAURM█NOTAUR\nMINOTAUR█INOTAURMINOTAURMINOTAURMINOTAURMINOTAU██INOTAUR\nMINOTAURM██OTAURMINOTAURMINOTAURMINOTAURMINOTA██MINOTAUR\nMINOTAURMIN █ █ █ █ █ █ SET FREE █ █ █ █ █ █ █URMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\n"
+			commandInput.disabled = true
+			commandInput.style.background = black
+			//Rip MP3 and play it here?
+		}
 
-            return paddedLine;
-        }
 
-        
-        setInterval(() => {
-            const turbulence = document.getElementById('turbulence');
-            const randomFreq = (Math.random() * 0.02 + 0.005).toFixed(3);
-            turbulence.setAttribute('baseFrequency', `${randomFreq} ${randomFreq}`);
-        }, 3000);
+			
 
-        // Flash messages on screen at random intervals 
-        //Every 60,000 ms, flip a coin. If heads display a message
-        setInterval(() => {
-              if (Math.random() < 0.5) randomFlashMessage();
-        }, 60000);
-    </script>
+
+//-=-=-=-=-	-=-=-=-=- Helpers, Getters, Setters, SetIntervals -=-=-=-=- -=-=-=-=-
+		function clearOutput(){
+			output.innerHTML = ""
+		}
+		function updateTime() {
+		  	const now = new Date();
+		  	now.setFullYear(1864);
+			now.setMonth(3); // April is month index 3 (0-based)
+			now.setDate(18);
+		  	const formatted = now.toLocaleString('en-US', {
+		    	month: 'short',
+		    	day: '2-digit',
+		    	year: 'numeric',
+		    	hour: '2-digit',
+		    	minute: '2-digit',
+		    	second: '2-digit',
+		    	hour12: false
+		  	}).toUpperCase();
+		  	document.getElementById('scp-time').textContent = formatted;
+		}
+		updateTime();
+		setInterval(updateTime, 1000);
+
+
+				//Flicker
+		setInterval(() => {
+			const turbulence = document.getElementById('turbulence');
+			const randomFreq = (Math.random() * 0.02 + 0.005).toFixed(3);
+			turbulence.setAttribute('baseFrequency', `${randomFreq} ${randomFreq}`);
+		}, 3000);
+
+		// Flash messages on screen at random intervals 
+		//Every 60,000 ms, flip a coin. If heads display a message
+		setInterval(() => {
+			  if (Math.random() < 0.5) randomFlashMessage();
+		}, 60000);
+
+		//Mouse captures
+		function getMousePos(evt) {
+		  const rect = canvas.getBoundingClientRect();
+		  return {
+		    x: evt.clientX - rect.left,
+		    y: evt.clientY - rect.top
+		  };
+		  console.log("X: " + evt.clientX - rect.left)
+		  console.log("Y: " + evt.clientY - rect.top)
+		}
+
+		canvas.addEventListener("mousemove", e => {
+		  	const { x, y } = getMousePos(e);
+		  	const hovered = mapBuildings.find(
+		    	b => x > b.x && x < b.x + b.width && y > b.y && y < b.y + b.height && b.map == currentMap
+		  	);
+		   		drawMap();
+
+		  	if (hovered) {
+		    	canvas.style.cursor = "pointer";
+		    	// show tooltip
+		    	if ((hovered.map == 1)&&(currentMap == 1)){
+		    		ctx.fillStyle = "yellow";
+		    		ctx.fillText(hovered.name, hovered.x + (.5 * hovered.width -25), hovered.y + (.5 * hovered.height));
+		    	}
+		    	if ((hovered.map == 2)&&(currentMap == 2)){
+		    		ctx.fillStyle = "red";
+		    		ctx.fillText(hovered.name, hovered.x + (.5 * hovered.width -25), hovered.y + (.5 * hovered.height));
+		    	}
+		  	} else {
+		    	canvas.style.cursor = "default";
+		  	}
+
+		});
+
+		//When the canvas is clicked
+		canvas.addEventListener("click", e => {
+		  	const { x, y } = getMousePos(e);
+		  	//Find the map building it has clicked on.
+		  	const clicked = mapBuildings.find(
+		    	b => x > b.x && x < b.x + b.width && y > b.y && y < b.y + b.height && b.map == currentMap
+		  	);
+		  	if (clicked) { //Pending which area is clicked.
+		  		switch (clicked.name){
+		  			case "Graveyard":
+		  				alert("The Graveyard holds more secrets and clues than one would believe. Some of the perished may not truly be gone.");
+		  				break;
+		  			case "Church":
+		  				alert("The Church is Eli's Home and the base for The Great Gander. Many folk passing through town have ignored the church and its teachings of Life, Hope, and Patience.");
+		  				break;
+		  			case "Water Tower":
+		  				alert("The Water Tower is Reginalds grandest endeavour yet. Pipes have recently gone missing before they could be installed yet his land flourishes with vegetation.");
+		  				break;
+		  			case "Well":
+		  				alert("Pry the boards, ask ███ ███████ anything.");
+		  				break;
+		  			case "Horse Pasture":
+		  				alert("Karen Green managed quite the herd here. Recently some horses have had the shoes stolen off of their feet, and a new flower has emerged in the corner of the pasture. Karen was investigating this when her body was found North of town.");
+		  				break;
+		  			case "Sheriff's Office":
+		  				alert("The Sheriff's Office and its contents are known only to Anna Bell. She lets none in, and anyone needing a jail cell is often exiled or treated to a more immediate solution.");
+		  				break;
+		  			case "Saloon":
+		  				alert("Anna Bell and Mr. Morris spent most of their days here drinking, talking, and playing cards.");
+		  				break;
+
+		  			case "Value":
+		  				alert("Everything begins and ends with chess.");
+		  				break;
+		  			case "Void":
+		  				alert("Vessels of good, vessel of bad. Dont shine light on that which should remain in darkness");
+		  				break;
+		  			case "Creation":
+		  				alert("See that which has ended, and inspires anew. That which is gone can still provide influence.");
+		  				break;
+		  			case "ͱϢϮ█Ͽϐ██":
+		  				alert("The Shame of Crete. Cursed by a god not known to this desert. A child only a mother could imprison, rather than kill");
+		  				break;
+
+		  			default:
+		  				break;
+		  		}
+		  	}
+		});
+	</script>
 </body>
 </html>
+
