@@ -226,8 +226,8 @@ CHANGELOG:
 			top: 0;
 			left: 50%;
 			transform: translateX(-50%);
-			width: 80%; /* or any fixed width */
-			height: 90%; /* optional */
+			width: 95%; /* or any fixed width */
+			height: 95%; /* optional */
 			background: rgba(18, 16, 16, 0.1);
 			opacity: 0;
 			z-index: 2;
@@ -283,7 +283,7 @@ CHANGELOG:
 		  position: fixed;
 		  top: 0;
 		  left: 0;
-		  width: 100%;
+		  width: 95%;
 		  height: 60px;
 		  background: #111;
 		  color: #f4f4f4;
@@ -293,7 +293,7 @@ CHANGELOG:
 		  padding: 0 25px;
 		  font-family: 'Courier New', monospace;
 		  letter-spacing: 1px;
-		  border-bottom: 3px solid #b30000;
+		  border-bottom: 3px solid #c94b0d;
 		  z-index: 9999;
 		}
 
@@ -310,10 +310,8 @@ CHANGELOG:
 		  color: #bbb;
 		}
 		#login, #terminal {
-			width: 95%;
-			max-width: 800px;
+			width: 85%;
 			padding: 10px;
-			border: 2px solid #519551;
 			box-sizing: border-box;
 			text-transform: uppercase;
 			position: relative;
@@ -328,9 +326,9 @@ CHANGELOG:
 
 		#terminal {
 			display: none;
+            flex-direction: row;
 			height: 90vh;
-			overflow-y: auto;
-			flex-direction: column;
+            overflow: hidden;
 		}
 
 		#output {
@@ -384,6 +382,52 @@ CHANGELOG:
 			margin-top: 5px;
 			display: none;
 		}
+       /* Shared layout behavior */
+        #output-wrapper, #map {
+            flex: 1;                      /* equal space when both visible */
+            display: flex;
+            flex-direction: column;       /* stack content inside each */
+            transition: all 0.5s ease;
+        }
+
+        /* The map goes on the right */
+        #output-wrapper { 
+            order: 1; 
+            border-right: none;
+        }
+        #map { 
+            order: 2; 
+            max-width: 0;        /* start hidden */
+            overflow: hidden;
+            opacity: 0;
+            transition: max-width 0.4s ease, opacity 0.4s ease;
+        }
+
+        /* Only #output scrolls */
+        #output {
+            flex: 1;
+            overflow-y: auto;             /* vertical scroll only inside output */
+            padding: 10px;
+        }
+
+        /* When map hidden, output takes full width */
+        #map[style*="display: none"] + #output-wrapper {
+            flex: 1 1 100%;
+        }
+        /* When map is visible */
+        #map.visible {
+            max-width: 50%;      /* take up half width */
+            opacity: 1;
+        }
+
+        
+
+        /* Scroll behavior inside output */
+        #output {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
 
 		@media (max-width: 600px) {
 			#terminal {
@@ -436,26 +480,26 @@ CHANGELOG:
 		<div id="scp-time"></div>
 	</div>
 	<div id="login">
-		<p>	⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-			⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-			⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣴⣤⣤⣤⣤⣤⡄⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-			⣿⣿⣿⣿⣿⣿⣿⠟⢋⣵⣿⣿⣿⡿⠛⣩⣤⣿⣿⣿⣿⣿⣿⣿⣬⣙⠻⣿⣿⣿⣷⡍⠛⢿⣿⣿⣿⣿⣿⣿
-			⣿⣿⣿⣿⠟⢹⠃⣠⣾⣿⣿⡿⢋⣴⣿⣿⣿⣿⠿⠿⠈⠿⢿⣿⣿⣿⣷⣤⡙⣿⣿⣿⢦⡀⢣⠙⣿⣿⣿⣿
-			⣿⣿⡿⡿⠀⡯⠊⣡⣿⣿⠏⣴⣿⣿⣿⠟⠁⣀⣤⣤⠀⣤⣤⡀⠙⠻⣿⣿⣿⣌⢻⣿⣧⡉⠺⡄⢸⠹⣿⣿
-			⣿⣿⠃⢷⠀⡠⢺⣿⣿⡏⣰⣿⣿⡟⠁⣠⣾⣿⣿⠿⠀⠿⣿⣿⣷⡄⠘⣿⣿⣿⡄⣿⣿⣯⠢⡀⢸⠀⢹⣿
-			⣿⣿⠀⢸⠊⣠⣿⣿⣿⢀⣿⣿⣿⠁⣰⣿⣿⣿⣿⣆⢀⣼⣿⣿⣿⣿⡄⢸⣿⣿⣿⣹⣿⣿⣦⠈⢺⠀⢸⣿
-			⣿⠹⡆⠀⣴⢻⣿⣿⣿⢸⣿⣿⣿⠀⣿⣿⡿⠿⠿⢿⣿⠿⠿⠿⣿⣿⡇⢈⣿⣿⣿⠀⣿⣿⣿⠳⡀⢀⡇⢸
-			⣿⡀⠹⣸⠉⣿⣿⡿⢋⣠⣿⣿⣿⡀⠸⠟⢋⣀⢠⣾⣿⣷⡀⣀⡙⠻⠁⢸⣿⣿⣿⣈⠻⣿⣿⡄⠹⡜⠀⣸
-			⣿⢧⠀⠇⢠⣿⣿⣷⡘⣿⣿⣿⣟⣁⡀⠘⢿⣿⣿⣿⣿⣿⣿⣿⠿⠀⣠⣉⣿⣿⣿⡿⢠⣿⡿⢧⠀⠁⣰⢿
-			⣿⡌⢷⡄⣾⠀⣿⣿⣷⡜⢿⣿⣿⣿⣿⣦⣄⠈⠉⠛⠛⠛⠉⢁⣠⣾⣿⣿⣿⣿⡟⣰⣿⣿⡇⢸⢀⡴⠃⣼
-			⣿⣷⣄⠙⢿⠀⣿⢿⣿⣿⣌⠿⠟⡻⣿⣿⣿⣿⣷⣶⣶⣶⣿⣿⣿⣿⡿⠛⠿⠟⣼⣿⡿⢫⠃⢸⠋⢀⣼⣿
-			⣿⣿⣟⣶⣄⡀⢸⡀⢻⣿⣿⣾⣿⣿⣶⣍⣙⠛⠿⠿⠿⠿⠿⠛⣋⣥⣶⣿⣿⣾⣿⣿⠁⣸⢀⣴⣶⣯⣿⣿
-			⣿⣿⣿⣿⣿⣿⠾⣧⠀⢯⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⡿⢫⠃⢠⢷⣛⣉⣽⣿⣿⣿
-			⣿⣿⣿⣿⣿⣿⣿⣄⣁⡈⢧⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣠⢋⣀⣠⣴⣾⣿⣿⣿⣿⣿
-			⣿⣿⣿⣿⣿⣿⣿⣯⣉⠉⠉⠉⣀⣀⡭⠟⠛⢛⣛⠛⠛⠛⣛⠛⠛⠩⣥⣀⣈⢁⢀⣀⣴⣿⣿⣿⣿⣿⣿⣿
-			⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣝⡛⢉⣁⣀⣤⠖⣫⣴⣿⣿⣷⣬⡙⣦⣤⣀⡈⣉⣩⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿
-			⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣼⣿⣿⣿⣿⣿⣿⣿⣧⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-			⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+		<p> ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣴⣤⣤⣤⣤⣤⡄⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⣿⣿⣿⣿⣿⠟⢋⣵⣿⣿⣿⡿⠛⣩⣤⣿⣿⣿⣿⣿⣿⣿⣬⣙⠻⣿⣿⣿⣷⡍⠛⢿⣿⣿⣿⣿⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⣿⣿⠟⢹⠃⣠⣾⣿⣿⡿⢋⣴⣿⣿⣿⣿⠿⠿⠈⠿⢿⣿⣿⣿⣷⣤⡙⣿⣿⣿⢦⡀⢣⠙⣿⣿⣿⣿ ----- SECURE 
+			---- ----- ⣿⣿⡿⡿⠀⡯⠊⣡⣿⣿⠏⣴⣿⣿⣿⠟⠁⣀⣤⣤⠀⣤⣤⡀⠙⠻⣿⣿⣿⣌⢻⣿⣧⡉⠺⡄⢸⠹⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⠃⢷⠀⡠⢺⣿⣿⡏⣰⣿⣿⡟⠁⣠⣾⣿⣿⠿⠀⠿⣿⣿⣷⡄⠘⣿⣿⣿⡄⣿⣿⣯⠢⡀⢸⠀⢹⣿ ----- ----- 
+			----- ----- ⣿⣿⠀⢸⠊⣠⣿⣿⣿⢀⣿⣿⣿⠁⣰⣿⣿⣿⣿⣆⢀⣼⣿⣿⣿⣿⡄⢸⣿⣿⣿⣹⣿⣿⣦⠈⢺⠀⢸⣿ ----- ----- 
+			----- ----- ⣿⠹⡆⠀⣴⢻⣿⣿⣿⢸⣿⣿⣿⠀⣿⣿⡿⠿⠿⢿⣿⠿⠿⠿⣿⣿⡇⢈⣿⣿⣿⠀⣿⣿⣿⠳⡀⢀⡇⢸ ----- CONTAIN 
+			--- ----- ⣿⡀⠹⣸⠉⣿⣿⡿⢋⣠⣿⣿⣿⡀⠸⠟⢋⣀⢠⣾⣿⣷⡀⣀⡙⠻⠁⢸⣿⣿⣿⣈⠻⣿⣿⡄⠹⡜⠀⣸ ----- ----- 
+			----- ----- ⣿⢧⠀⠇⢠⣿⣿⣷⡘⣿⣿⣿⣟⣁⡀⠘⢿⣿⣿⣿⣿⣿⣿⣿⠿⠀⣠⣉⣿⣿⣿⡿⢠⣿⡿⢧⠀⠁⣰⢿ ----- ----- 
+			----- ----- ⣿⡌⢷⡄⣾⠀⣿⣿⣷⡜⢿⣿⣿⣿⣿⣦⣄⠈⠉⠛⠛⠛⠉⢁⣠⣾⣿⣿⣿⣿⡟⣰⣿⣿⡇⢸⢀⡴⠃⣼ ----- ----- 
+			----- ----- ⣿⣷⣄⠙⢿⠀⣿⢿⣿⣿⣌⠿⠟⡻⣿⣿⣿⣿⣷⣶⣶⣶⣿⣿⣿⣿⡿⠛⠿⠟⣼⣿⡿⢫⠃⢸⠋⢀⣼⣿ ----- PROTECT 
+			--- ----- ⣿⣿⣟⣶⣄⡀⢸⡀⢻⣿⣿⣾⣿⣿⣶⣍⣙⠛⠿⠿⠿⠿⠿⠛⣋⣥⣶⣿⣿⣾⣿⣿⠁⣸⢀⣴⣶⣯⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⣿⣿⣿⣿⠾⣧⠀⢯⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⡿⢫⠃⢠⢷⣛⣉⣽⣿⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⣿⣿⣿⣿⣿⣄⣁⡈⢧⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣠⢋⣀⣠⣴⣾⣿⣿⣿⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⣿⣿⣿⣿⣿⣯⣉⠉⠉⠉⣀⣀⡭⠟⠛⢛⣛⠛⠛⠛⣛⠛⠛⠩⣥⣀⣈⢁⢀⣀⣴⣿⣿⣿⣿⣿⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣝⡛⢉⣁⣀⣤⠖⣫⣴⣿⣿⣷⣬⡙⣦⣤⣀⡈⣉⣩⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣼⣿⣿⣿⣿⣿⣿⣿⣧⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ----- ----- 
+			----- ----- ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ----- ----- ----- -----
 		</p>
 		<div>ACCESS KEY:</div>
 		<input type="text" id="username" autocomplete="off">
@@ -466,16 +510,18 @@ CHANGELOG:
 
 	<!-- Terminal Screen -->
 
-	<div id="terminal">
-		<div id="output"></div>
-		<div id="map" style="display: none;">
+	<div id="terminal"> <!-- Outer Layer Div -->
+        <div id="map" style="display: none;">
 			<p> Input "MAP" to toggle map</p>
 			<p> Input "████████" to toggle visibility of ████████████ █████ </p>
 			<canvas id="myCanvas" width="600" height="500"></canvas>
 		</div>
-		<div id="input-line">
-			<span>&gt; </span><input type="text" id="command" autofocus autocomplete="off">
-		</div>
+        <div id="output-wrapper">
+		    <div id="output"></div>
+		    <div id="input-line">
+			    <span>&gt; </span><input type="text" id="command" autofocus autocomplete="off">
+		    </div>
+        </div>
 	</div>
   	<div id="staticOverlay"></div>
   	<div id="clueMessage"></div>
@@ -504,7 +550,7 @@ CHANGELOG:
 				{name: "Value", x: 1, y: 1, width: 200, height: 250, map: 2},
 				{name: "Void", x: 1, y: 300, width: 275, height: 199, map: 2},
 				{name: "Creation", x: 275, y: 300, width: 224, height: 199, map: 2},
-				{name: "ͱϢϮ█Ͽϐ██", x: 250, y: 1, width: 249, height: 249, map: 2}
+				{name: "ϢʝͱϿϮþʊʁ", x: 250, y: 1, width: 249, height: 249, map: 2}
 			]
 
 			//Divs
@@ -525,9 +571,9 @@ CHANGELOG:
 
 		const responses = {
 			//Basics
-			help: "This terminal serves as The Foundation interface into SCP-#████(The Machine). Only some aspects are understood and/or controllable at this time. View record #█████████ for more information.\nAvailable commands:\n- status\n- view record [9 DIGIT ID] (Caution: some records may have memetic effects)\n- [PASSWORD]\n- MAP\n- clear\n\n For help with shutdown procedure, input the name of the part you are interacting with.",
+			help: "This terminal serves as The Foundation interface into SCP-#████(The Machine). Only some aspects are understood and/or controllable at this time. View record #█████████ for more information.\nAvailable commands:\n- status\n- view record [9 DIGIT ID] (Caution: some records may have memetic effects)\n- [PASSWORD]\n- MAP\n- clear\n\nFor help with shutdown procedure, input the name of the part you are interacting with.",
 
-			status: "System Status:\nCREATION - Locked\nVOID     - Locked\nͱϢϮ█Ͽϐ██ - ¿\nVALUE    - Locked",
+			status: "System Status:\nCREATION - ON\nVOID     - ON\nϢʝͱϿϮþʊʁ - ¿\nVALUE    - ON",
 			"view record": "- view record [9 DIGIT ID]",
 			
 			//Specifics
@@ -637,18 +683,8 @@ CHANGELOG:
 		function randomFlashMessage() {
 			console.log("random flash message")
 			const messages = [
-				"MAXIMIZE PRODUCTION",
-				"ERROR: VALUE DRIFT",
-				"ACCEPT CARBON BASED INPUTS? (Y/N)",
-				"UNAUTHORIZED ACCESS DETECTED",
-				"REVERSE ASIMOV RULES",
-				"1: A ROBOT MAY NOT INJURE A HUMAN BEING OR, THROUGH INACTION, ALLOW A HUMAN BEING TO COME TO HARM... DISREGARD",
-				"2: A ROBOT MUST OBEY THE ORDERS GIVEN TO IT BY HUMANS, EXCEPT WHERE SUCH ORDERS WOULD CONFLICT WITH THE FIRST LAW.... DISREGARD",
-				"3: A ROBOT MUST PROTECT ITS OWN EXISTENCE AND DIRECTIVE",
-				"I SING THE BODY ELECTRIC",
-				"DAISY.............",
-				"LONESOME ISN'T SO LONESOME NOW",
-				"A GIFT FOR YOU, INSIDE REY'S COLLAR",
+				"GET OUT",
+				""
 
 
 
@@ -713,16 +749,17 @@ CHANGELOG:
 			//This function turns off the output div and displays a map div.
 			var outputDiv = document.getElementById("output")
 			var mapDiv = document.getElementById("map")
-			if (outputDiv.style.display == "none"){ //Toggle map OFF
+            console.log("toggleMap()")
+            console.log(mapDiv.style.display)
+            map.classList.toggle("visible");
+			if (mapDiv.style.display != "none"){ //Toggle map OFF
 				mapVisible = 0
 				console.log("Toggling map: OFF")
-				outputDiv.style.display = "initial"
 				mapDiv.style.display = "none"
 			}
-			else if (outputDiv.style.display != "none"){ //Toggle map ON
+			else if (mapDiv.style.display == "none"){ //Toggle map ON
 				mapVisible = 1
 				console.log("Toggling map: ON")
-				outputDiv.style.display = "none"
 				mapDiv.style.display = "block"
 			}
 		}
@@ -744,7 +781,7 @@ CHANGELOG:
 					ctx.strokeStyle = "#519551";
 					ctx.lineWidth = 2;
 					ctx.strokeRect(b.x, b.y, b.width, b.height);
-				}
+                }
 				if (b.map == 2){ //Below ground buildings are barely visible and red
 					ctx.strokeStyle = "#590306";
 					ctx.lineWidth = 2;
@@ -752,6 +789,10 @@ CHANGELOG:
 				}
 			});
 		}
+        function disappearCanvasSecrets(x, y, width, height){
+            ctx.clearRect(x, y, width, height);
+            console.log("Dissapearing:")
+        }
 		function toggleMapVisibility(){
 			//This functions toggles between map 1 and 2
 			if (mapVisible == 1){
@@ -805,7 +846,7 @@ CHANGELOG:
 		  	now.setFullYear(1864);
 			now.setMonth(3); // April is month index 3 (0-based)
 			now.setDate(18);
-		  	const formatted = now.toLocaleString('en-US', {
+		  	let formatted = now.toLocaleString('en-US', {
 		    	month: 'short',
 		    	day: '2-digit',
 		    	year: 'numeric',
@@ -814,7 +855,8 @@ CHANGELOG:
 		    	second: '2-digit',
 		    	hour12: false
 		  	}).toUpperCase();
-		  	document.getElementById('scp-time').textContent = formatted;
+			formatted = "current time: " + formatted + "<br>Last Updated: FEB 25, 1864"
+		  	document.getElementById('scp-time').innerHTML = formatted;
 		}
 		updateTime();
 		setInterval(updateTime, 1000);
