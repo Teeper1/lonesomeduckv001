@@ -429,6 +429,27 @@ CHANGELOG:
             padding: 10px;
         }
 
+		#hud-column {
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+			z-index: 9999;
+		}
+
+		.hud-btn {
+			display: none; /* Hidden by default */
+			padding: 6px 10px;
+			background: rgba(0,0,0,0.7);
+			color: #519551;
+			border: 1px solid #519551;
+		  	font-family: 'Courier New', monospace;
+			cursor: pointer;
+		}
+
+
 		@media (max-width: 600px) {
 			#terminal {
 				font-size: 1em;
@@ -441,7 +462,7 @@ CHANGELOG:
 			text-shadow: 0 0 3px #519551, 0 0 10px #519551;
 		}
 		.user-command {
-			color: #4118f4; /* User command echo color  */
+			color: #a298d2; /* User command echo color  */
 		}
 
 		.system-output {
@@ -509,6 +530,7 @@ CHANGELOG:
 	</div>
 
 	<!-- Terminal Screen -->
+	<div id="hud-column"></div>
 
 	<div id="terminal"> <!-- Outer Layer Div -->
         <div id="map" style="display: none;">
@@ -577,22 +599,38 @@ CHANGELOG:
 			"view record": "- view record [9 DIGIT ID]",
 			
 			//Specifics
-			"view record [751024919]": '-------------------------\nPersonnel Record: Lonesome (Duck)\n Classification: Deceased\n Summary: Dead : Hopeful : Impatient\n Appearance: Yellow chick\n Lonesome was a female Anas platyrhynchos domesticus (domestic call duck) that established permanent residence within the central fountain of ████████ ████. The specimen displayed no anomalous traits but achieved significant cultural importance among local inhabitants, serving as an informal symbol of prosperity and communal identity.\n Town records indicate the settlement’s name was derived directly from the specimen, following repeated public references to “Lonesome’s Fountain.” Subject presence was correlated with measurable increases in local morale and civic participation, suggesting minor psychosocial influence of non-anomalous origin.\n Addendum 01 [02-25-1864]\n Specimen-Δ1 was confirmed deceased following contamination of the municipal water source during activation of the “Fessender Water Company” tower constructed by Reginald Fessender. No further anomalous activity has been recorded.\n-------------------------\n',
-
-			"view record [359024191]": '-------------------------\nPersonnel Record: Eli Sunday (Preacher)\n Classification: Euclid\n Summary: Alive : Hopeful : Patient\n Eli Sunday functions as the primary religious authority within [REDACTED], operating under the doctrine of a local deity referred to as The Great Gander. Subject exhibits anomalous capabilities inconsistent with current scientific understanding and has been designated as a thaumaturgic entity of interest.\n Observed or reported manifestations include:\n - Spontaneous biological regeneration of injured organisms, with no discernible energy source.\n - Spontaneous generation of potable water in small quantities.\n - Temporary enhancement of physical or cognitive performance in individuals following verbal or ritual invocation.\n - Limited control or influence over regional flora and fauna, particularly avian species of the Anatidae family.\n While the origin of these effects remains undetermined, ethnographic accounts suggest a hereditary or devotional link to The Great Gander. Further study is pending authorization.',
-
-			"view record [359086191]": '-------------------------\nPersonnel Record: Anna Bell (Sheriff)\n Classification: Safe\n Summary: Alive : Hopeless : Patient\n',
-
-			"view record [359086919]": '-------------------------\nPersonnel Record: Reginald Fessender (Eccentric)\n Classification: Unstable\n Summary: Alive : Hopeless : Impatient\n Reginald Fessender is an eccentric inventor originally from boston.',
-
-			"view record [359024919]": '-------------------------\nPersonnel Record: ██████ Morris (Fortune Teller)\n Classification: Safe\n Summary: Alive : Hopeful : Impatient\n ██████ Morris is an adult male resident of Lonesome Duck, currently without formal occupation. Subject presents himself as a practitioner of divination and claims to have the ability to communicate with non-corporeal entities. No proof of these claims has been found to date, though he is very good at cards.\n Morris frequents the local saloon where he plays cards and provides fortune-telling services to visitors.\n Addendum 01 [02-25-1864]\n Following the sinkhole incident adjacent to the Fessender Water Tower, ██████ Morris has been flagged for continued observation. Subject successfully predicted the sinkhole filling, and closing the well.\n-------------------------\n',
-
-			"view record [751024191]": '-------------------------\nPersonnel Record: Karen Green (Horse Trader)\n Classification: Deceased\n Summary: Dead : Hopeful : Patient\n Karen Green is the horse trader and general contractor for Lonesome Dove. She is close friends with Sheriff Bell and holds a key to the Sheriff\'s Office. ',
-
-			"view record [751086919]": '-------------------------\nPersonnel Record: The Machine (██████ ██████)\n Classification: █████\n Summary: Artificial : Hopeless : Impatient\n The Machine is an anomalous construct of unknown origin and design, exhibiting levels of technological sophistication that exceed all known human capability. Preliminary analysis suggests the entity operates as an autonomous management or environmental regulation system, potentially created by a non-human or prehuman civilization.\n Initial discovery occurred following a series of unexplained phenomena within the town of Lonesome Duck, including:\n - Systematic deterrence of predatory fauna within a 1 km radius.\n - Apparent manipulation of geothermal gradients resulting in localized subterranean heating.\n - Controlled redirection of sub-surface aquifers to maintain stable water availability.\n - Minor atmospheric stabilization and particulate filtration.\n - Although the entity maintained complete concealment from the local population, its indirect effects were observed to improve living conditions and civic development metrics.\n Addendum 01 [02-25-1864]\n Following Incident ████████-A, during which The Machine executed a large-scale self-modification sequence, all observable functions abruptly terminated. The structure now appears inert. Internal data cores are unresponsive, and all previously accessible files have been erased.\nBy order of the O5 Council, Site operations have been suspended indefinitely. No further study or recovery efforts are authorized.\n-------------------------\n',
-
-			"view record [751086191]": "-------------------------\n Personnel Record: ████████\n Classification: KETER\n Summary: Undead : Destroyer of Hopes : Waiting \n ████I███████████████████h█████a████████v█████████e█████████████████\n██████████c███r████e████a██████t████e████d█████████████████████████\n █████████████████████████████████a████████████████████\n██████████m█████o████n████s███████t████e███████████r███████████████████████\n---imsorry-----------\n",
-
+			"view record [751024919]": () => {
+				revealHudButton("view record [751024919]");
+   				return '-----------------------------\nPersonnel Record: Lonesome (Duck)\n Classification: Deceased\n Summary: Dead : Hopeful : Impatient\n Appearance: Yellow chick\n Lonesome was a female Anas platyrhynchos domesticus (domestic call duck) that established permanent residence within the central fountain of ████████ ████. The specimen displayed no anomalous traits but achieved significant cultural importance among local inhabitants, serving as an informal symbol of prosperity and communal identity.\n Town records indicate the settlement’s name was derived directly from the specimen, following repeated public references to “Lonesome’s Fountain.” Subject presence was correlated with measurable increases in local morale and civic participation, suggesting minor psychosocial influence of non-anomalous origin.\n Addendum 01 [02-25-1864]\n Specimen-Δ1 was confirmed deceased following contamination of the municipal water source during activation of the “Fessender Water Company” tower constructed by Reginald Fessender. No further anomalous activity has been recorded.\n-------------------------\n'
+			},
+			"view record [359024191]": () => {
+				revealHudButton("view record [359024191]");
+    			return '-------------------------\nPersonnel Record: Eli Sunday (Preacher)\n Classification: Euclid\n Summary: Alive : Hopeful : Patient\n Eli Sunday functions as the primary religious authority within [REDACTED], operating under the doctrine of a local deity referred to as The Great Gander. Subject exhibits anomalous capabilities inconsistent with current scientific understanding and has been designated as a thaumaturgic entity of interest.\n Observed or reported manifestations include:\n - Spontaneous biological regeneration of injured organisms, with no discernible energy source.\n - Spontaneous generation of potable water in small quantities.\n - Temporary enhancement of physical or cognitive performance in individuals following verbal or ritual invocation.\n - Limited control or influence over regional flora and fauna, particularly avian species of the Anatidae family.\n While the origin of these effects remains undetermined, ethnographic accounts suggest a hereditary or devotional link to The Great Gander. Further study is pending authorization.'
+			},
+			"view record [359086191]": () => {
+				revealHudButton("view record [359086191]");
+    			return '-------------------------\nPersonnel Record: Anna Bell (Sheriff)\n Classification: Safe\n Summary: Alive : Hopeless : Patient\n'
+			},
+			"view record [359086919]": () => {
+				revealHudButton("view record [359086919]");
+    			return '-------------------------\nPersonnel Record: Reginald Fessender (Eccentric)\n Classification: Unstable\n Summary: Alive : Hopeless : Impatient\n Reginald Fessender is an eccentric inventor originally from boston.'
+			},
+			"view record [359024919]": () => {
+				revealHudButton("view record [359024919]");
+    			return '-------------------------\nPersonnel Record: ██████ Morris (Fortune Teller)\n Classification: Safe\n Summary: Alive : Hopeful : Impatient\n ██████ Morris is an adult male resident of Lonesome Duck, currently without formal occupation. Subject presents himself as a practitioner of divination and claims to have the ability to communicate with non-corporeal entities. No proof of these claims has been found to date, though he is very good at cards.\n Morris frequents the local saloon where he plays cards and provides fortune-telling services to visitors.\n Addendum 01 [02-25-1864]\n Following the sinkhole incident adjacent to the Fessender Water Tower, ██████ Morris has been flagged for continued observation. Subject successfully predicted the sinkhole filling, and closing the well.\n-------------------------\n'
+			},
+			"view record [751024191]": () => {
+				revealHudButton("view record [751024191]");
+    			return '-------------------------\nPersonnel Record: Karen Green (Horse Trader)\n Classification: Deceased\n Summary: Dead : Hopeful : Patient\n Karen Green is the horse trader and general contractor for Lonesome Dove. She is close friends with Sheriff Bell and holds a key to the Sheriff\'s Office. '
+			},
+			"view record [751086919]": () => {
+				revealHudButton("view record [751086919]");
+    			return '-------------------------\nPersonnel Record: The Machine (██████ ██████)\n Classification: █████\n Summary: Artificial : Hopeless : Impatient\n The Machine is an anomalous construct of unknown origin and design, exhibiting levels of technological sophistication that exceed all known human capability. Preliminary analysis suggests the entity operates as an autonomous management or environmental regulation system, potentially created by a non-human or prehuman civilization.\n Initial discovery occurred following a series of unexplained phenomena within the town of Lonesome Duck, including:\n - Systematic deterrence of predatory fauna within a 1 km radius.\n - Apparent manipulation of geothermal gradients resulting in localized subterranean heating.\n - Controlled redirection of sub-surface aquifers to maintain stable water availability.\n - Minor atmospheric stabilization and particulate filtration.\n - Although the entity maintained complete concealment from the local population, its indirect effects were observed to improve living conditions and civic development metrics.\n Addendum 01 [02-25-1864]\n Following Incident ████████-A, during which The Machine executed a large-scale self-modification sequence, all observable functions abruptly terminated. The structure now appears inert. Internal data cores are unresponsive, and all previously accessible files have been erased.\nBy order of the O5 Council, Site operations have been suspended indefinitely. No further study or recovery efforts are authorized.\n-------------------------\n'
+			},
+			"view record [751086191]": () => {
+				revealHudButton("view record [751086191]");
+    			return "-------------------------\n Personnel Record: ████████\n Classification: KETER\n Summary: Undead : Destroyer of Hopes : Waiting \n ████I███████████████████h█████a████████v█████████e█████████████████\n██████████c███r████e████a██████t████e████d█████████████████████████\n █████████████████████████████████a████████████████████\n██████████m█████o████n████s███████t████e███████████r███████████████████████\n----.-----------\n"
+			},
 			//Shutdown Procedures
 			"wire": "-------------------------\nWires\n When shutting down the machine please ensure to follow all steps exactly.\nHow many wires are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] wires",
 			"wires": "-------------------------\nWires\n When shutting down the machine please ensure to follow all steps exactly.\nHow many wires are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] wires",
@@ -619,7 +657,8 @@ CHANGELOG:
 			basement: () => toggleMapVisibility(),
 			basements: () => toggleMapVisibility(),
 			clear: () => clearOutput(),
-			minotaur: () => activateRedMode(),
+			minotaur: () => " minotarur text",
+			ϢʝͱϿϮþʊʁ: () => activateRedMode(),
 			unknown: "ERROR: UNKNOWN COMMAND"
 		};
 
@@ -627,8 +666,10 @@ CHANGELOG:
 
 //-=-=-=-=-=-=-=- Methods and Fucntions to run at startup -=-=-=-=-=-=-=-=-=
 		drawMap()
+		initializeHudButtons();
 //-=-=-=-=-=-=-=-=-=-=- EVENT LISTENERS -=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=
 		// Trigger login on button click
+		loginBtn.addEventListener('click', attemptLogin);
 		loginBtn.addEventListener('click', attemptLogin);
 
 		// Trigger login on Enter key
@@ -648,9 +689,17 @@ CHANGELOG:
 
 	
 //-=-=-=-=-=-=-=-=-=-=- END EVENT LISTENERS -=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=
-
+		function revealHudButton(command) {
+			const allButtons = document.querySelectorAll(".hud-btn");
+			allButtons.forEach(btn => {
+				if (btn.textContent.toLowerCase() === command.toLowerCase()) {
+					btn.style.display = "block";
+				}
+			});
+		}
 		
-
+		
+		
 		function handleCommand(cmd) {
 			const command = cmd.trim().toLowerCase();
 			const response = responses[command];
@@ -680,11 +729,15 @@ CHANGELOG:
 
 			output.scrollTop = output.scrollHeight;
 		}
+		
+
 		function randomFlashMessage() {
 			console.log("random flash message")
 			const messages = [
 				"GET OUT",
-				""
+				"i am protecting you",
+				"Daisy",
+				"dont speak the true name",
 
 
 
@@ -800,6 +853,8 @@ CHANGELOG:
 			}
 			drawMap();
 		}
+		
+
 
 
 
@@ -832,6 +887,28 @@ CHANGELOG:
 			commandInput.style.background = black
 			//Rip MP3 and play it here?
 		}
+
+				// Build HUD buttons for all view record entries
+		function initializeHudButtons() {
+			const hud = document.getElementById("hud-column");
+
+			Object.keys(responses).forEach(key => {
+				if (key.startsWith("view record [")) {
+					let btn = document.createElement("button");
+					btn.classList.add("hud-btn");
+					btn.textContent = key;
+
+					// Optional: clicking it re-triggers the command
+					btn.addEventListener("click", () => {
+						handleCommand(key);
+					});
+
+					hud.appendChild(btn);
+				}
+			});
+		}
+
+
 
 
 			
@@ -950,7 +1027,7 @@ CHANGELOG:
 		  			case "Creation":
 		  				alert("See that which has ended, and inspires anew. That which is gone can still provide influence.");
 		  				break;
-		  			case "ͱϢϮ█Ͽϐ██":
+		  			case "ϢʝͱϿϮþʊʁ":
 		  				alert("The Shame of Crete. Cursed by a god not known to this desert. A child only a mother could imprison, rather than kill");
 		  				break;
 
