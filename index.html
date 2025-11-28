@@ -595,7 +595,7 @@ CHANGELOG:
 			//Basics
 			help: "This terminal serves as The Foundation interface into SCP-#████(The Machine). Only some aspects are understood and/or controllable at this time. View record #█████████ for more information.\nAvailable commands:\n- status\n- view record [9 DIGIT ID] (Caution: some records may have memetic effects)\n- [PASSWORD]\n- MAP\n- clear\n\nFor help with shutdown procedure, input the name of the part you are interacting with.",
 
-			status: "System Status:\nCREATION - ON\nVOID     - ON\nϢʝͱϿϮþʊʁ - ¿\nVALUE    - ON",
+			status: "System Status:\nCREATION - ON\nVOID     - ON\████████ - ¿\nVALUE    - ON",
 			"view record": "- view record [9 DIGIT ID]",
 			
 			//Specifics
@@ -641,24 +641,25 @@ CHANGELOG:
 			"laser": "-------------------------\nLaser \n When shutting down the machine please ensure to follow all steps exactly.\nHow many mirrors are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] mirrors",
 			"lasers": "-------------------------\nLaser \n When shutting down the machine please ensure to follow all steps exactly.\nHow many mirrors are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] mirrors",
 
-			"[X] wires": "Cut the red wire, wait 5 seconds, then cut the yellow wire",
-			"[Y] wires": "Cut the blue wire, wait 5 seconds, then cut the yellow wire",
-			"[Z] wires": "Cut the blue wire, wait 5 seconds, then cut the red wire",
+			"[4] wires": "Cut the red wire, wait 5 seconds, then cut the yellow wire",
+			"[5] wires": "Cut the blue wire, wait 5 seconds, then cut the yellow wire",
+			"[6] wires": "Cut the blue wire, wait 5 seconds, then cut the red wire",
 
-			"[X] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a red sector",
-			"[Y] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a green sector",
-			"[Z] gears": "Rotate the gears such that the furthest arrow from the turning wheel points into a red sector",
+			"[5] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a red sector",
+			"[6] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a green sector",
+			"[7] gears": "Rotate the gears such that the furthest arrow from the turning wheel points into a red sector",
 
-			"[X] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
-			"[Y] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
-			"[Z] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
-			
+			"[2] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
+			"[6] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
+			"[8] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
+			"shitdown": "Haha you spelled it wrong",
+			"shutdown": "Shutdown text here",
 			map: () => toggleMap(),
 			basement: () => toggleMapVisibility(),
 			basements: () => toggleMapVisibility(),
 			clear: () => clearOutput(),
 			minotaur: () => " minotarur text",
-			ϢʝͱϿϮþʊʁ: () => activateRedMode(),
+			"ϣʝͱͽϯþʊʁ": () => activateRedMode(),
 			unknown: "ERROR: UNKNOWN COMMAND"
 		};
 
@@ -701,7 +702,9 @@ CHANGELOG:
 		
 		
 		function handleCommand(cmd) {
+			console.log(cmd);
 			const command = cmd.trim().toLowerCase();
+			console.log(command);
 			const response = responses[command];
 
 			let outputText;
@@ -737,6 +740,11 @@ CHANGELOG:
 				"GET OUT",
 				"i am protecting you",
 				"Daisy",
+				"dont speak the true name",
+				"dont speak the true name",
+				"dont speak the true name",
+				"Just leave",
+				"-=-=- -=-=- -=-=-",
 				"dont speak the true name",
 
 
@@ -867,10 +875,10 @@ CHANGELOG:
 			styleTag.id = "red-mode-style";
 			styleTag.textContent = `
 				* {
-					color: black !important;
-					border-color: black !important;
-					outline-color: black !important;
-					text-shadow: 0 0 10px black !important;
+					color: #000000 !important;
+					border-color: #000000 !important;
+					outline-color: #000000 !important;
+					text-shadow: 0 0 10px #000000 !important;
 					background-color: red !important;
 					transition: all 2s ease-in-out;
 				}
@@ -884,7 +892,7 @@ CHANGELOG:
 			document.head.appendChild(styleTag);
             output.innerHTML = "MINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURM██OTAURMINOTAURMINOTAURMINOTAURMINOT██RMINOTAUR\nMINOTAURMI███AURMINOTAURMINOTAURMINOTAURMIN███URMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINO█AURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINO█AUR\nMINOT█URMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMIN█TAUR\nMINOT█URMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMIN█TAUR\nMINOTA█RMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMI█OTAUR\nMINOTAU█MINOTAURMINOTAURMINOTAURMINOTAURMINOTAURM█NOTAUR\nMINOTAUR█INOTAURMINOTAURMINOTAURMINOTAURMINOTAU██INOTAUR\nMINOTAURM██OTAURMINOTAURMINOTAURMINOTAURMINOTA██MINOTAUR\nMINOTAURMIN █ █ █ █ █ █ SET FREE █ █ █ █ █ █ █URMINOTAUR\nMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAURMINOTAUR\n"
 			commandInput.disabled = true
-			commandInput.style.background = black
+			commandInput.style.background = "#000000"
 			//Rip MP3 and play it here?
 		}
 
@@ -1012,7 +1020,7 @@ CHANGELOG:
 		  				alert("Karen Green managed quite the herd here. Recently some horses have had the shoes stolen off of their feet, and a new flower has emerged in the corner of the pasture. Karen was investigating this when her body was found North of town.");
 		  				break;
 		  			case "Sheriff's Office":
-		  				alert("The Sheriff's Office and its contents are known only to Anna Bell. She lets none in, and anyone needing a jail cell is often exiled or treated to a more immediate solution.");
+		  				alert("The Sheriff's Office and its contents are known only to Anna Bell. She lets no one in, and anyone needing a jail cell is often exiled or treated to a more immediate solution.");
 		  				break;
 		  			case "Saloon":
 		  				alert("Anna Bell and Mr. Morris spent most of their days here drinking, talking, and playing cards.");
@@ -1028,7 +1036,7 @@ CHANGELOG:
 		  				alert("See that which has ended, and inspires anew. That which is gone can still provide influence.");
 		  				break;
 		  			case "ϢʝͱϿϮþʊʁ":
-		  				alert("The Shame of Crete. Cursed by a god not known to this desert. A child only a mother could imprison, rather than kill");
+		  				alert("ϢʝͱϿϮþʊʁ The Shame of Crete. Cursed by a god not known to this desert. Imprisoned, rather tahn killed by its mother.");
 		  				break;
 
 		  			default:
