@@ -451,11 +451,42 @@ CHANGELOG:
 
 
 		@media (max-width: 600px) {
+			
+			body {
+				font-size: 18px;     /* Smaller text */
+				filter: none;        /* Removes heavy CRT blur for mobile */
+			}
+
 			#terminal {
-				font-size: 1em;
-				height: 95vh;
+				flex-direction: column;    /* Stack vertically */
+				width: 100%;
+				height: 100vh;
+			}
+
+			#output-wrapper, 
+			#map {
+				max-width: 100% !important; 
+				width: 100% !important;
+			}
+
+			#map {
+				height: 40vh;             /* Make map visible & usable */
+				opacity: 1;
+			}
+
+			#output {
+				height: 60vh;
+				font-size: 0.9em;
+			}
+
+			#scp-header {
+				width: 100%;
+				height: 45px;
+				font-size: .8rem;
+				padding: 0 10px;
 			}
 		}
+
 		
 		#terminal, #login {
 			filter: url(#crt-wave);
