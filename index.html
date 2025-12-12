@@ -690,7 +690,7 @@ CHANGELOG:
 			basements: () => toggleMapVisibility(),
 			clear: () => clearOutput(),
 			minotaur: () => " minotarur text",
-			"ϣʝͱͽϯþʊʁ": () => activateRedMode(),
+			ϣʝͱͽϯþʊʁ: () => activateRedMode(),
 			unknown: "ERROR: UNKNOWN COMMAND"
 		};
 
@@ -925,6 +925,8 @@ CHANGELOG:
 			commandInput.disabled = true
 			commandInput.style.background = "#000000"
 			//Rip MP3 and play it here?
+			const audio = new Audio('/audio/ShutMeDown.mp3');
+            audio.play();
 		}
 
 				// Build HUD buttons for all view record entries
@@ -1054,7 +1056,7 @@ CHANGELOG:
 		  				alert("The Sheriff's Office and its contents are known only to Anna Bell. She lets no one in, and anyone needing a jail cell is often exiled or treated to a more immediate solution.");
 		  				break;
 		  			case "Saloon":
-		  				alert("Anna Bell and Mr. Morris spent most of their days here drinking, talking, and playing cards.");
+		  				alert("Anna Bell and Mr. Morris spend most of their days here drinking, talking, and playing cards.");
 		  				break;
 
 		  			case "Value":
