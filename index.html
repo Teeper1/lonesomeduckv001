@@ -666,8 +666,6 @@ CHANGELOG:
 			"wire": "-------------------------\nWires\n When shutting down the machine please ensure to follow all steps exactly.\nHow many wires are visible in the interior of the room?\n\n Format your response as follows. \n  >X wires",
 			"wires": "-------------------------\nWires\n When shutting down the machine please ensure to follow all steps exactly.\nHow many wires are visible in the interior of the room?\n\n Format your response as follows. \n  >X wires",
 
-			"gear": "-------------------------\nGears\n When shutting down the machine please ensure to follow all steps exactly.\nHow many gears are visible in the interior of the room?\n\n Format your response as follows.  \n  >X gears",
-			"gears": "-------------------------\nGears\n When shutting down the machine please ensure to follow all steps exactly.\nHow many gears are visible in the interior of the room?\n\n Format your response as follows.  \n  >X gears",
 
 			"laser": "-------------------------\nLaser \n When shutting down the machine please ensure to follow all steps exactly.\nHow many mirrors are visible in the interior of the room?\n\n Format your response as follows.  \n  >X mirrors",
 			"lasers": "-------------------------\nLaser \n When shutting down the machine please ensure to follow all steps exactly.\nHow many mirrors are visible in the interior of the room?\n\n Format your response as follows.  \n  >X mirrors",
@@ -676,20 +674,19 @@ CHANGELOG:
 			"[4] wires": "Cut the blue wire, wait 5 seconds, then cut the yellow wire",
 			"[5] wires": "Cut the blue wire, wait 5 seconds, then cut the red wire",
 
-			"[13] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a red sector",
-			"[15] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a green sector",
-			"[17] gears": "Rotate the gears such that the furthest arrow from the turning wheel points into a red sector",
-
 			"[2] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
 			"[6] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
 			"[8] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
 
-			"shutdown": "Shutdown can only commence when all 3 ██████ ███ ██ ██. For more information input that name of the part you are interacting with.",
+			"shutdown": "Shutdown will automatically commence when all 3 ██████ ███ ██ ██. Ensure all 0-5 members are more than 500 yards from  For more information input that name of the part you are interacting with.",
 			map: () => toggleMap(),
 			basement: () => toggleMapVisibility(),
 			basements: () => toggleMapVisibility(),
 			clear: () => clearOutput(),
-			minotaur: () => " minotarur text",
+			"minotaur": () => {
+				clearOutput();
+    			return 's p e a \n  k\n\n\n\n\n\np\n\n   r\ne\nc\ni\ns\ne\nl\ny';
+			},
 			ϣʝͱͽϯþʊʁ: () => activateRedMode(),
 			unknown: "ERROR: UNKNOWN COMMAND"
 		};
