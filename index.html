@@ -624,7 +624,7 @@ CHANGELOG:
 
 		const responses = {
 			//Basics
-			help: "This terminal serves as The Foundation interface into SCP-#████(The Machine). Only some aspects are understood and/or controllable at this time. View record #█████████ for more information.\nAvailable commands:\n- status\n- view record [9 DIGIT ID] (Caution: some records may have memetic effects)\n- [PASSWORD]\n- MAP\n- clear\n\nFor help with shutdown procedure, input the name of the part you are interacting with.",
+			help: "This terminal serves as The Foundation interface into SCP-#████(The Machine). Only some aspects are understood and/or controllable at this time. View record #█████████ for more information.\nAvailable commands:\n- status\n- view record [9 DIGIT ID] (Caution: some records may have memetic effects)\n- [PASSWORD]\n- MAP\n- clear",
 
 			status: "System Status:\nCREATION - ON\nVOID     - ON\n███████ - ¿\nVALUE    - ON",
 			"view record": "- view record [9 DIGIT ID]",
@@ -632,19 +632,19 @@ CHANGELOG:
 			//Specifics
 			"view record [751024919]": () => {
 				revealHudButton("view record [751024919]");
-   				return '-----------------------------\nPersonnel Record: Lonesome (Duck)\n Classification: Deceased\n Summary: Dead : Hopeful : Impatient\n Appearance: Yellow chick\n Lonesome was a female Anas platyrhynchos domesticus (domestic call duck) that established permanent residence within the central fountain of ████████ ████. The specimen displayed no anomalous traits but achieved significant cultural importance among local inhabitants, serving as an informal symbol of prosperity and communal identity.\n Town records indicate the settlement’s name was derived directly from the specimen, following repeated public references to “Lonesome’s Fountain.” Subject presence was correlated with measurable increases in local morale and civic participation, suggesting minor psychosocial influence of non-anomalous origin.\n Addendum 01 [02-25-1864]\n Specimen-Δ1 was confirmed deceased following contamination of the municipal water source during activation of the “Fessender Water Company” tower constructed by Reginald Fessender. No further anomalous activity has been recorded.\n-------------------------\n'
+   				return '-----------------------------\nPersonnel Record: Lonesome (Duck)\n Classification: Deceased\n Summary: Dead : Hopeful : Impatient\n Appearance: Yellow chick\n Lonesome was a female domestic call duck that lives in the central fountain of ████████ ████. The specimen displayed no anomalous traits but achieved significant cultural importance among local inhabitants, serving as an informal symbol of prosperity and communal identity.\n Town records indicate the settlement’s name was derived directly from the specimen, following repeated public references to “Lonesome’s Fountain.” \n Addendum 01 [02-25-1864]\n Lonesome was confirmed deceased following contamination of the municipal water source during erection of the “Fessender Water Company” tower constructed by Reginald Fessender.\n-------------------------\n'
 			},
 			"view record [359024191]": () => {
 				revealHudButton("view record [359024191]");
-    			return '-------------------------\nPersonnel Record: Eli Sunday (Preacher)\n Classification: Euclid\n Summary: Alive : Hopeful : Patient\n Eli Sunday functions as the primary religious authority within [REDACTED], operating under the doctrine of a local deity referred to as The Great Gander. Subject exhibits anomalous capabilities inconsistent with current scientific understanding and has been designated as a thaumaturgic entity of interest.\n Observed or reported manifestations include:\n - Spontaneous biological regeneration of injured organisms, with no discernible energy source.\n - Spontaneous generation of potable water in small quantities.\n - Temporary enhancement of physical or cognitive performance in individuals following verbal or ritual invocation.\n - Limited control or influence over regional flora and fauna, particularly avian species of the Anatidae family.\n While the origin of these effects remains undetermined, ethnographic accounts suggest a hereditary or devotional link to The Great Gander. Further study is pending authorization.'
+    			return '-------------------------\nPersonnel Record: Eli Sunday (Preacher)\n Classification: Euclid\n Summary: Alive : Hopeful : Patient\n Eli Sunday functions as the primary religious authority within [REDACTED], operating under the doctrine of a local deity referred to as The Great Gander. Eli exhibits anomalous capabilities similar to others classified as "Druids" in Foundation Databases (See papers by D. Arneson, G. Gygax).\n Observed or reported manifestations include:\n - Consistent time spent conduction rituals that affect plant fetility and yield.\n - Spontaneous generation of water in medium quantities.\n - Limited control or influence over regional flora and fauna, particularly avian species of the Anatidae family.\n Eli is too morally dedicated to "The Great Gander" and would be of little use to The Foundation'
 			},
 			"view record [359086191]": () => {
 				revealHudButton("view record [359086191]");
-    			return '-------------------------\nPersonnel Record: Anna Bell (Sheriff)\n Classification: Safe\n Summary: Alive : Hopeless : Patient\n'
+    			return '-------------------------\nPersonnel Record: Anna Bell (Sheriff)\n Classification: Safe\n Summary: Alive : Hopeless : Patient\n Anna Belle is the local Sheriff of [REDACTED]. Although Anna is the voice of the Law, she only involves herself in situations that Eli cannot resolve. \n Anna primarily spends time on the outskirts of town researching "Rust Monster" equivalents that have been seen throughout town. All Foundation reports of these "Rust Monsters" or ████████ ██ ████████ have been classified. '
 			},
 			"view record [359086919]": () => {
 				revealHudButton("view record [359086919]");
-    			return '-------------------------\nPersonnel Record: Reginald Fessender (Eccentric)\n Classification: Unstable\n Summary: Alive : Hopeless : Impatient\n Reginald Fessender is an eccentric inventor originally from boston.'
+    			return '-------------------------\nPersonnel Record: Reginald Fessender (Eccentric)\n Classification: Unstable\n Summary: Alive : Hopeless : Impatient\n Reginald Fessender is an eccentric inventor originally from Boston, MA. After getting a doctorate in Electrical Engineering reginald made his way westward hoping to help in the mines, but got stuck in Lonesome. Since then he has spent time trying to develop a wireless telegraph machine, and a water tower.'
 			},
 			"view record [359024919]": () => {
 				revealHudButton("view record [359024919]");
@@ -656,35 +656,35 @@ CHANGELOG:
 			},
 			"view record [751086919]": () => {
 				revealHudButton("view record [751086919]");
-    			return '-------------------------\nPersonnel Record: The Machine (██████ ██████)\n Classification: █████\n Summary: Artificial : Hopeless : Impatient\n The Machine is an anomalous construct of unknown origin and design, exhibiting levels of technological sophistication that exceed all known human capability. Preliminary analysis suggests the entity operates as an autonomous management or environmental regulation system, potentially created by a non-human or prehuman civilization.\n Initial discovery occurred following a series of unexplained phenomena within the town of Lonesome Duck, including:\n - Systematic deterrence of predatory fauna within a 1 km radius.\n - Apparent manipulation of geothermal gradients resulting in localized subterranean heating.\n - Controlled redirection of sub-surface aquifers to maintain stable water availability.\n - Minor atmospheric stabilization and particulate filtration.\n - Although the entity maintained complete concealment from the local population, its indirect effects were observed to improve living conditions and civic development metrics.\n Addendum 01 [02-25-1864]\n Following Incident ████████-A, during which The Machine executed a large-scale self-modification sequence, all observable functions abruptly terminated. The structure now appears inert. Internal data cores are unresponsive, and all previously accessible files have been erased.\nBy order of the O5 Council, Site operations have been suspended indefinitely. No further study or recovery efforts are authorized.\n-------------------------\n'
+    			return '-------------------------\nPersonnel Record: The Machine (██████ ██████)\n Classification: █████\n Summary: Artificial : Hopeless : Impatient\n The Machine is an anomalous construct of unknown origin and design, exhibiting levels of technological sophistication that exceed all known human capability.\n Initial discovery occurred following a series of unexplained phenomena within the town of Lonesome Duck, including:\n - Deterrance of predatory fauna within a 1 km radius.\n - Altering of underground chemistry composition to encourage greater yields from crops.\n Other electrical signals sent from below earth, but these are too complex to be deciphered with current technology. \n - Although the entity maintained complete concealment from the local population, its indirect effects were observed to improve living conditions and civic development metrics.\n Addendum 01 [02-25-1864]\n Following Incident ████████-A, during which The Machine executed a large-scale self-modification sequence, all observable functions abruptly terminated. The structure now appears inert and locked down. Internal data cores are unresponsive, and all previously accessible files have been erased.\n The only remaining signal is the sound of an unfound, presumably dying generator. By order of the O5 Council, Site operations have been suspended indefinitely. No further study or recovery efforts are authorized.\n-------------------------\n'
 			},
 			"view record [751086191]": () => {
 				revealHudButton("view record [751086191]");
     			return "-------------------------\n Personnel Record: ████████\n Classification: KETER\n Summary: Undead : Destroyer of Hopes : Waiting \n ████I███████████████████h█████a████████v█████████e█████████████████\n██████████c███r████e████a██████t████e████d█████████████████████████\n █████████████████████████████████a████████████████████\n██████████m█████o████n████s███████t████e███████████r███████████████████████\n----.-----------\n"
 			},
 			//Shutdown Procedures
-			"wire": "-------------------------\nWires\n When shutting down the machine please ensure to follow all steps exactly.\nHow many wires are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] wires",
-			"wires": "-------------------------\nWires\n When shutting down the machine please ensure to follow all steps exactly.\nHow many wires are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] wires",
+			"wire": "-------------------------\nWires\n When shutting down the machine please ensure to follow all steps exactly.\nHow many wires are visible in the interior of the room?\n\n Format your response as follows. \n  >X wires",
+			"wires": "-------------------------\nWires\n When shutting down the machine please ensure to follow all steps exactly.\nHow many wires are visible in the interior of the room?\n\n Format your response as follows. \n  >X wires",
 
-			"gear": "-------------------------\nGears\n When shutting down the machine please ensure to follow all steps exactly.\nHow many gears are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] gears",
-			"gears": "-------------------------\nGears\n When shutting down the machine please ensure to follow all steps exactly.\nHow many gears are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] gears",
+			"gear": "-------------------------\nGears\n When shutting down the machine please ensure to follow all steps exactly.\nHow many gears are visible in the interior of the room?\n\n Format your response as follows.  \n  >X gears",
+			"gears": "-------------------------\nGears\n When shutting down the machine please ensure to follow all steps exactly.\nHow many gears are visible in the interior of the room?\n\n Format your response as follows.  \n  >X gears",
 
-			"laser": "-------------------------\nLaser \n When shutting down the machine please ensure to follow all steps exactly.\nHow many mirrors are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] mirrors",
-			"lasers": "-------------------------\nLaser \n When shutting down the machine please ensure to follow all steps exactly.\nHow many mirrors are visible in the interior of the room?\n\n Format your response as follows. Place number inside square brackets\n  >[X] mirrors",
+			"laser": "-------------------------\nLaser \n When shutting down the machine please ensure to follow all steps exactly.\nHow many mirrors are visible in the interior of the room?\n\n Format your response as follows.  \n  >X mirrors",
+			"lasers": "-------------------------\nLaser \n When shutting down the machine please ensure to follow all steps exactly.\nHow many mirrors are visible in the interior of the room?\n\n Format your response as follows.  \n  >X mirrors",
 
-			"[4] wires": "Cut the red wire, wait 5 seconds, then cut the yellow wire",
-			"[5] wires": "Cut the blue wire, wait 5 seconds, then cut the yellow wire",
-			"[6] wires": "Cut the blue wire, wait 5 seconds, then cut the red wire",
+			"[3] wires": "Cut the red wire, wait 5 seconds, then cut the yellow wire",
+			"[4] wires": "Cut the blue wire, wait 5 seconds, then cut the yellow wire",
+			"[5] wires": "Cut the blue wire, wait 5 seconds, then cut the red wire",
 
-			"[5] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a red sector",
-			"[6] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a green sector",
-			"[7] gears": "Rotate the gears such that the furthest arrow from the turning wheel points into a red sector",
+			"[13] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a red sector",
+			"[15] gears": "Rotate the gears such that the 2nd furthest arrow from the turning wheel points into a green sector",
+			"[17] gears": "Rotate the gears such that the furthest arrow from the turning wheel points into a red sector",
 
 			"[2] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
 			"[6] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
 			"[8] mirrors": "Position the mirrors such that the laser connects with the ███████████ ██████████████",
-			"shitdown": "Haha you spelled it wrong",
-			"shutdown": "Shutdown text here",
+
+			"shutdown": "Shutdown can only commence when all 3 ██████ ███ ██ ██. For more information input that name of the part you are interacting with.",
 			map: () => toggleMap(),
 			basement: () => toggleMapVisibility(),
 			basements: () => toggleMapVisibility(),
@@ -770,7 +770,7 @@ CHANGELOG:
 			const messages = [
 				"GET OUT",
 				"i am protecting you",
-				"Daisy",
+				"Daisy.......",
 				"dont speak the true name",
 				"dont speak the true name",
 				"dont speak the true name",
